@@ -1,1 +1,14 @@
-
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: false
+    show-sql: false
+    open-in-view: false
+  datasource:
+    password: ${DB_PASSWORD}
+    username: ${DB_USER}
+    url: ${DB_URL}

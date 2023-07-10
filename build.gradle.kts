@@ -40,6 +40,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.17.6")
     testImplementation("org.testcontainers:junit-jupiter:1.17.6")
     testImplementation("org.testcontainers:mysql:1.17.6")
+    testImplementation("io.rest-assured:rest-assured")
 }
 
 tasks.withType<KotlinCompile> {
