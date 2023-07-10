@@ -8,9 +8,15 @@ class Article(
 
     _link: String,
 
-    var name: String,
+    @Column(name = "title", nullable = false)
+    var title: String,
+
+
+    @Column(name = "member_id", nullable = false)
+    val memberId: Long = 0L,
 
     @Id
+    @Column(name = "article_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 ): BaseTimeEntity() {

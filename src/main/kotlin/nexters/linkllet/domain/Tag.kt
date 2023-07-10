@@ -13,6 +13,7 @@ class Tag(
     val articleId: Long = 0L,
 
     @Id
+    @Column(name = "tag_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 ): BaseTimeEntity()
