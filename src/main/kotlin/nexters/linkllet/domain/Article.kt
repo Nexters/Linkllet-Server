@@ -16,6 +16,7 @@ class Article(
     val memberId: Long = 0L,
 
     @Id
+    @Column(name = "article_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 ): BaseTimeEntity() {

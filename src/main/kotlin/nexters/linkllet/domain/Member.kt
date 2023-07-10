@@ -15,6 +15,7 @@ class Member(
     val deviceId: String,
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
 ) {
