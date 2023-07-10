@@ -8,7 +8,12 @@ class Article(
 
     _link: String,
 
-    var name: String,
+    @Column(name = "title", nullable = false)
+    var title: String,
+
+
+    @Column(name = "member_id", nullable = false)
+    val memberId: Long = 0L,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
