@@ -13,8 +13,11 @@ class Member(
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long = 0L,
+    private val _id: Long = 0L,
 ) : BaseTimeEntity() {
+
+    val id: Long
+        get() = this._id
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -22,10 +25,13 @@ class Member(
 
         other as Member
 
-        return id == other.id
+        if (deviceId != other.deviceId) return false
+        return _id == other._id
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        var result = deviceId.hashCode()
+        result = 31 * result + _id.hashCode()
+        return result
     }
 }
