@@ -13,4 +13,18 @@ class Member(
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
-)
+) {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Member
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+}
