@@ -10,11 +10,19 @@ class Articles {
     @OneToMany(mappedBy = "folder", cascade = [CascadeType.PERSIST, CascadeType.MERGE], orphanRemoval = true)
     private val articles: MutableList<Article> = mutableListOf()
 
+    companion object {
+        private val MAX_FOLDER_SIZE = 50
+    }
+
     fun add(article: Article) {
+        if (!isValidSize()) throw IllegalStateException("폴더가 가득 찼습니다.")
+
         this.articles.add(article)
     }
 
     fun addAll(vararg article: Article) {
+        if (!isValidSize()) throw IllegalStateException("폴더가 가득 찼습니다.")
+
         this.articles.addAll(article)
     }
 
@@ -31,4 +39,6 @@ class Articles {
     fun deleteAll() {
         this.articles.clear()
     }
+
+    private fun isValidSize() = this.articles.size < MAX_FOLDER_SIZE
 }
