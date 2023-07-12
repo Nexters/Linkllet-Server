@@ -1,5 +1,6 @@
-package nexters.linkllet.domain
+package nexters.linkllet.domain.article
 
+import nexters.linkllet.article.domain.Article
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

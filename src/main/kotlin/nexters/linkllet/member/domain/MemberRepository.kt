@@ -1,6 +1,5 @@
-package nexters.linkllet.repository
+package nexters.linkllet.member.domain
 
-import nexters.linkllet.domain.Member
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 

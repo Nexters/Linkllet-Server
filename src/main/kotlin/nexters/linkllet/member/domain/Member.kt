@@ -1,4 +1,4 @@
-package nexters.linkllet.domain
+package nexters.linkllet.member.domain
 
 import javax.persistence.Column
 import javax.persistence.Entity

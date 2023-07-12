@@ -1,4 +1,4 @@
-package nexters.linkllet.domain
+package nexters.linkllet.common.domain
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.springframework.data.annotation.CreatedDate
