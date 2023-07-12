@@ -1,5 +1,6 @@
 package nexters.linkllet.member.domain
 
+import nexters.linkllet.common.domain.BaseTimeEntity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -12,11 +13,10 @@ import javax.persistence.Table
 class Member(
 
     @Column(name = "device_id", nullable = false)
-    val deviceId: String,
+    private val deviceId: String,
 
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-) {
-}
+    private val id: Long = 0L,
+): BaseTimeEntity()
