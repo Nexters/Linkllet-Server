@@ -13,7 +13,7 @@ class Folder(
     private var name: String,
 
     @Column(name = "member_id", nullable = false)
-    private val memberId: Long = 0L,
+    private var memberId: Long = 0L,
 
     @Id
     @Column(name = "folder_id")
@@ -42,6 +42,10 @@ class Folder(
 
     fun deleteAll() {
         this.articles.deleteAll()
+    }
+
+    fun assignMember(memberId: Long) {
+        this.memberId = memberId
     }
 
     override fun equals(other: Any?): Boolean {
