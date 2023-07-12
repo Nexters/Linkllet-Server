@@ -29,10 +29,13 @@ class DatabaseCleaner(
     @Transactional
     fun execute() {
         entityManager.flush()
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate()
 
         tableNames.forEach {
             entityManager.createNativeQuery("TRUNCATE TABLE $it").executeUpdate()
             entityManager.createNativeQuery("ALTER TABLE $it AUTO_INCREMENT = 1").executeUpdate()
         }
+
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1").executeUpdate()
     }
 }

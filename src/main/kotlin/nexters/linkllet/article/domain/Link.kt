@@ -1,4 +1,4 @@
-package nexters.linkllet.domain
+package nexters.linkllet.article.domain
 
 import java.lang.IllegalArgumentException
 import java.util.regex.Pattern
