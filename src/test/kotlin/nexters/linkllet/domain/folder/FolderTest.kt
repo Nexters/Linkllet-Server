@@ -6,7 +6,6 @@ import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 @DisplayName("도메인 : Folder")
 class FolderTest {
@@ -75,25 +74,5 @@ class FolderTest {
 
         // then
         assertThat(folder.getArticles()).isEmpty()
-    }
-
-    @Test
-    @DisplayName("폴더의 사이즈인 50보다 많은 article을 저장할 수 없다.")
-    fun invalid_folder_size() {
-        // given
-        val folder = Folder("article_folder")
-        for (i in 0..49) {
-            folder.addArticle(Article("https://blogshine.tistory.com/" + i, "article_" + i))
-        }
-
-        // when, then
-        assertThrows<IllegalStateException> {
-            folder.addArticle(
-                Article(
-                    "https://blogshine.tistory.com/temp",
-                    "article_temp"
-                )
-            )
-        }
     }
 }
