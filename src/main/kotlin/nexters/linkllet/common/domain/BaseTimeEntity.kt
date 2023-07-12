@@ -17,10 +17,10 @@ class BaseTimeEntity(
     @Column(name = "created_at", updatable = false)
     @CreatedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private val createTime: LocalDateTime? = null,
+    private var createAt: LocalDateTime? = LocalDateTime.now(),
 
     @Column(name = "last_modified_at")
     @LastModifiedDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private val lastModifiedTime: LocalDateTime? = null,
+    private var lastModifiedAt: LocalDateTime? = null,
 )
