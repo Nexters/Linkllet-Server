@@ -1,7 +1,7 @@
 package nexters.linkllet.acceptance
 
 import io.restassured.RestAssured
-import nexters.linkllet.dto.MemberSignUpRequest
+import nexters.linkllet.member.dto.MemberSignUpRequest
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
