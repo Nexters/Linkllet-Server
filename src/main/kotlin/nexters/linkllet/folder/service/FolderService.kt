@@ -16,7 +16,11 @@ class FolderService(
 
     fun createFolder(deviceId: String, folderName: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
-        val newFolder = folderRepository.save(Folder(folderName))
-        newFolder.assignMember(findMember.id)
+
+        if(folderRepository.existsByMemberIdAndName(findMember.id, folderName)) {
+            throw IllegalStateException("이미 사용된 폴더 이름 입니다")
+        }
+
+        folderRepository.save(Folder(folderName, findMember.id))
     }
 }
