@@ -20,7 +20,6 @@ class FolderStep {
                 .body(folderCreateRequest)
                 .`when`().post("/api/v1/folders")
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
                 .extract()
 
         fun 응답_확인(폴더_생성_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =

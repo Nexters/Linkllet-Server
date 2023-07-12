@@ -27,4 +27,22 @@ class FolderAcceptanceTest : AcceptanceTest() {
         // then
         응답_확인(폴더_생성_요청_응답, HttpStatus.OK)
     }
+
+    /**
+     * given: 회원 가입된 사용자가 있다.
+     * And: 폴더 하나가 저장되어 있다
+     * when: 폴더 이름을 이미 지정된 폴더 이름과 동일하게 지정한후 생성한다
+     * then: 폴더를 생성할 수 없다
+     */
+    @Test
+    fun `폴더 중복 이름 생성`() {
+        // given
+        폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+
+        // when
+        val 폴더_생성_요청_응답 = 폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+
+        // then
+        응답_확인(폴더_생성_요청_응답, HttpStatus.BAD_REQUEST)
+    }
 }
