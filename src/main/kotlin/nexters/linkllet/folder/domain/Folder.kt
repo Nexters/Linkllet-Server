@@ -10,7 +10,7 @@ import javax.persistence.*
 class Folder(
 
     @Column(name = "name", nullable = false)
-    private var name: String,
+    var name: String,
 
     @Column(name = "member_id", nullable = false)
     private var memberId: Long = 0L,
@@ -18,8 +18,11 @@ class Folder(
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long = 0L,
+    private val _id: Long = 0L,
 ) : BaseTimeEntity() {
+
+    val id: Long
+        get() = this._id
 
     @Embedded
     private val articles: Articles = Articles()
@@ -50,10 +53,10 @@ class Folder(
 
         other as Folder
 
-        return id == other.id
+        return _id == other._id
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        return _id.hashCode()
     }
 }
