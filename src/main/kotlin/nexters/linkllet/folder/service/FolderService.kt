@@ -4,6 +4,8 @@ import nexters.linkllet.article.domain.Article
 import nexters.linkllet.folder.domain.Folder
 import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.findByIdOrThrow
+import nexters.linkllet.folder.dto.ArticleLookupDto
+import nexters.linkllet.folder.dto.ArticleLookupListResponse
 import nexters.linkllet.folder.dto.FolderLookupDto
 import nexters.linkllet.folder.dto.FolderLookupListResponse
 import nexters.linkllet.member.domain.MemberRepository
@@ -30,7 +32,7 @@ class FolderService(
     }
 
     @Transactional(readOnly = true)
-    fun lookupList(deviceId: String): FolderLookupListResponse {
+    fun lookupFolderList(deviceId: String): FolderLookupListResponse {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
         val folderDtoList = folderRepository
@@ -53,5 +55,16 @@ class FolderService(
 
         val findFolder = folderRepository.findByIdOrThrow(folderId)
         findFolder.addArticle(Article(url, name, findMember.id, findFolder))
+    }
+
+    @Transactional(readOnly = true)
+    fun lookupArticleList(folderId: Long, deviceId: String): ArticleLookupListResponse {
+        val articleDtoList = folderRepository.findByIdOrThrow(folderId)
+            .getArticles()
+            .stream()
+            .map(ArticleLookupDto::of)
+            .toList()
+
+        return ArticleLookupListResponse(articleDtoList)
     }
 }
