@@ -18,11 +18,11 @@ class Folder(
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val _id: Long = 0L,
+    private val id: Long = 0L,
 ) : BaseTimeEntity() {
 
-    val id: Long
-        get() = this._id
+    val getId: Long
+        get() = this.id
 
     @Embedded
     private val articles: Articles = Articles()
@@ -53,10 +53,10 @@ class Folder(
 
         other as Folder
 
-        return _id == other._id
+        return id == other.id
     }
 
     override fun hashCode(): Int {
-        return _id.hashCode()
+        return id.hashCode()
     }
 }

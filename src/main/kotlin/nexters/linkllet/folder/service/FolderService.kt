@@ -17,7 +17,7 @@ class FolderService(
     private val memberRepository: MemberRepository,
 ) {
 
-    fun createFolder(deviceId: String, folderName: String) {
+    fun createFolder(folderName: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
         if (folderRepository.existsByMemberIdAndName(findMember.id, folderName)) {
@@ -27,6 +27,7 @@ class FolderService(
         folderRepository.save(Folder(folderName, findMember.id))
     }
 
+    @Transactional(readOnly = true)
     fun lookupList(deviceId: String): FolderLookupListResponse {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
@@ -37,5 +38,11 @@ class FolderService(
             .toList()
 
         return FolderLookupListResponse(folderDtoList)
+    }
+
+    fun deleteFolder(folderId: Long, deviceId: String) {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+
+        folderRepository.deleteByMemberIdAndId(findMember.id, folderId)
     }
 }

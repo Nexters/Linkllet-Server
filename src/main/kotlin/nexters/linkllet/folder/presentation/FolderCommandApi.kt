@@ -20,7 +20,16 @@ class FolderCommandApi(
         @RequestBody request: FolderCreateRequest,
         @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
     ): ResponseEntity<Unit> {
-        folderService.createFolder(deviceId, request.name)
+        folderService.createFolder(request.name, deviceId)
         return ResponseEntity.ok().build()
+    }
+
+    @DeleteMapping("/folders/{id}")
+    fun delete(
+        @PathVariable id: Long,
+        @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+    ): ResponseEntity<Unit> {
+        folderService.deleteFolder(id, deviceId)
+        return ResponseEntity.noContent().build()
     }
 }

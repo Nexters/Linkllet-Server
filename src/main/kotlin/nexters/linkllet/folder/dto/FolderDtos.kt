@@ -9,7 +9,7 @@ data class FolderLookupDto(
     val name: String,
 ) {
     companion object {
-        fun of(folder: Folder): FolderLookupDto = FolderLookupDto(folder.id, folder.name)
+        fun of(folder: Folder): FolderLookupDto = FolderLookupDto(folder.getId, folder.name)
     }
 }
 
