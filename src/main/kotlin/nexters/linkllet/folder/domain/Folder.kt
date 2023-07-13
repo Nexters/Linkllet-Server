@@ -15,17 +15,21 @@ class Folder(
     @Column(name = "member_id", nullable = false)
     private var memberId: Long = 0L,
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private val type: FolderType = FolderType.PERSONALIZED,
+
     @Id
     @Column(name = "folder_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
 
-    val getId: Long
-        get() = this.id
-
     @Embedded
     private val articles: Articles = Articles()
+
+    val getId: Long
+        get() = this.id
 
     fun addArticle(article: Article) {
         this.articles.add(article)
