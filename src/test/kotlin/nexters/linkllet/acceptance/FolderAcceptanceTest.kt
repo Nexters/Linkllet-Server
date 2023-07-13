@@ -1,11 +1,12 @@
 package nexters.linkllet.acceptance
 
-import nexters.linkllet.acceptance.FolderStep.Companion.응답_확인
+import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_삭제_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_생성_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_응답_확인
 import nexters.linkllet.folder.dto.FolderCreateRequest
+import nexters.linkllet.util.AcceptanceTest
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

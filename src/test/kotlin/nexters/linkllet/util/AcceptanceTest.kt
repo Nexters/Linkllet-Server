@@ -1,4 +1,4 @@
-package nexters.linkllet.acceptance
+package nexters.linkllet.util
 
 import io.restassured.RestAssured
 import org.junit.jupiter.api.BeforeEach

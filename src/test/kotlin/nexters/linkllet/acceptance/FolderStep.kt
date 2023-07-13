@@ -40,10 +40,6 @@ class FolderStep {
                 .then().log().all()
                 .extract()
 
-        fun 응답_확인(폴더_생성_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =
-            Assertions.assertThat(폴더_생성_요청_응답.statusCode()).isEqualTo(httpStatus.value())
-
-
         fun 폴더_조회_응답_확인(폴더_조회_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus, count: Int) {
             assertAll(
                 { Assertions.assertThat(폴더_조회_요청_응답.statusCode()).isEqualTo(httpStatus.value()) },

@@ -1,4 +1,4 @@
-package nexters.linkllet.acceptance
+package nexters.linkllet.util
 
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
