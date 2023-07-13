@@ -71,7 +71,7 @@ class FolderTest {
         folder.addAllArticle(articleOne, articleTwo, articleThree)
 
         // when
-        folder.deleteArticleById(2L)
+        folder.deleteArticleById(2L, folder.getId)
 
         // then
         assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3");
