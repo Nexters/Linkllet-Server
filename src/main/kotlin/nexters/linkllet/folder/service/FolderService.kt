@@ -1,7 +1,9 @@
 package nexters.linkllet.folder.service
 
+import nexters.linkllet.article.domain.Article
 import nexters.linkllet.folder.domain.Folder
 import nexters.linkllet.folder.domain.FolderRepository
+import nexters.linkllet.folder.domain.findByIdOrThrow
 import nexters.linkllet.folder.dto.FolderLookupDto
 import nexters.linkllet.folder.dto.FolderLookupListResponse
 import nexters.linkllet.member.domain.MemberRepository
@@ -44,5 +46,12 @@ class FolderService(
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
         folderRepository.deleteByMemberIdAndId(findMember.id, folderId)
+    }
+
+    fun addArticleAtFolder(folderId: Long, name: String, url: String, deviceId: String) {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+
+        val findFolder = folderRepository.findByIdOrThrow(folderId)
+        findFolder.addArticle(Article(url, name, findMember.id, findFolder))
     }
 }
