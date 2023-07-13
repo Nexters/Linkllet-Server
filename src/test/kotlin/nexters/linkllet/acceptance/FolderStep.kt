@@ -31,6 +31,15 @@ class FolderStep {
                 .then().log().all()
                 .extract()
 
+        fun 폴더_삭제_요청(folder_id: Long) =
+            RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Id", "device_id")
+                .`when`().delete("/api/v1/folders/{id}", folder_id)
+                .then().log().all()
+                .extract()
+
         fun 응답_확인(폴더_생성_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =
             Assertions.assertThat(폴더_생성_요청_응답.statusCode()).isEqualTo(httpStatus.value())
 
