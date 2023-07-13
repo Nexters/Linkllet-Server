@@ -82,7 +82,7 @@ class FolderTest {
     fun invalid_folder_size() {
         // given
         val folder = Folder("article_folder")
-        for (i in 0..49) {
+        for (i in 0..50) {
             folder.addArticle(Article("https://blogshine.tistory.com/" + i, "article_" + i))
         }
 

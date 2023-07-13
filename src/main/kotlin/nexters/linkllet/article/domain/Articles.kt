@@ -40,5 +40,5 @@ class Articles {
         this.articles.clear()
     }
 
-    private fun isValidSize() = this.articles.size < MAX_FOLDER_SIZE
+    private fun isValidSize() = this.articles.size <= MAX_FOLDER_SIZE
 }
