@@ -61,6 +61,23 @@ class FolderTest {
     }
 
     @Test
+    @DisplayName("article을 Id로 단건 삭제한다")
+    fun delete_article_by_id() {
+        // given
+        val articleOne = Article("https://blogshine.tistory.com/1", "article_1", id = 1L)
+        val articleTwo = Article("https://blogshine.tistory.com/2", "article_2", id = 2L)
+        val articleThree = Article("https://blogshine.tistory.com/3", "article_3", id = 3L)
+        val folder = Folder("article_folder")
+        folder.addAllArticle(articleOne, articleTwo, articleThree)
+
+        // when
+        folder.deleteArticleById(2L)
+
+        // then
+        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3");
+    }
+
+    @Test
     @DisplayName("article을 한번에 삭제한다")
     fun delete_all_article() {
         // given
@@ -73,7 +90,7 @@ class FolderTest {
         // when
         folder.deleteAll()
 
-        // then
+        // then가
         assertThat(folder.getArticles()).isEmpty()
     }
 

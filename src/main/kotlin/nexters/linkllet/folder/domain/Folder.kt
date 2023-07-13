@@ -43,12 +43,20 @@ class Folder(
         return articles.getArticles()
     }
 
+    fun deleteArticleById(articleId: Long) {
+        this.articles.deleteById(articleId)
+    }
+
     fun deleteArticle(article: Article) {
         this.articles.delete(article)
     }
 
     fun deleteAll() {
         this.articles.deleteAll()
+    }
+
+    fun isFolderOwnerId(memberId: Long): Boolean {
+        return this.memberId == memberId
     }
 
     override fun equals(other: Any?): Boolean {
