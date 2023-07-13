@@ -5,6 +5,7 @@ import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
@@ -22,7 +23,23 @@ class FolderStep {
                 .then().log().all()
                 .extract()
 
+        fun 폴더_조회_요청(deviceId: String): ExtractableResponse<Response> =
+            RestAssured
+                .given().log().all()
+                .header("Device-Id", deviceId)
+                .`when`().get("/api/v1/folders")
+                .then().log().all()
+                .extract()
+
         fun 응답_확인(폴더_생성_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =
             Assertions.assertThat(폴더_생성_요청_응답.statusCode()).isEqualTo(httpStatus.value())
+
+
+        fun 폴더_조회_응답_확인(폴더_조회_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus, count: Int) {
+            assertAll(
+                { Assertions.assertThat(폴더_조회_요청_응답.statusCode()).isEqualTo(httpStatus.value()) },
+                { Assertions.assertThat(폴더_조회_요청_응답.jsonPath().getList<Any>("folderList").size).isEqualTo(count) }
+            )
+        }
     }
 }
