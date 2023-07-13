@@ -52,8 +52,8 @@ class FolderService(
 
     fun addArticleAtFolder(folderId: Long, name: String, url: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
-
         val findFolder = folderRepository.findByIdOrThrow(folderId)
+
         findFolder.addArticle(Article(url, name, findMember.id, findFolder))
     }
 
@@ -72,10 +72,6 @@ class FolderService(
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
-        if(!findFolder.isFolderOwnerId(findMember.id)) {
-            throw IllegalStateException("본인의 폴더가 아닙니다")
-        }
-
-        findFolder.deleteArticleById(articleId)
+        findFolder.deleteArticleById(articleId, findMember.id)
     }
 }

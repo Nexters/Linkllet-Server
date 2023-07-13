@@ -32,6 +32,10 @@ class Folder(
         get() = this.id
 
     fun addArticle(article: Article) {
+        if (!this.isFolderOwnerId(article.getMemberId)) {
+            throw IllegalStateException("본인의 폴더가 아닙니다")
+        }
+
         this.articles.add(article)
     }
 
@@ -43,7 +47,11 @@ class Folder(
         return articles.getArticles()
     }
 
-    fun deleteArticleById(articleId: Long) {
+    fun deleteArticleById(articleId: Long, memberId: Long) {
+        if (!this.isFolderOwnerId(memberId)) {
+            throw IllegalStateException("본인의 폴더가 아닙니다")
+        }
+
         this.articles.deleteById(articleId)
     }
 

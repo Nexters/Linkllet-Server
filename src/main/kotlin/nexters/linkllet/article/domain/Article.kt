@@ -42,6 +42,9 @@ class Article(
     val getLink: String
         get() = this.link.value
 
+    val getMemberId: Long
+        get() = this.memberId
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
