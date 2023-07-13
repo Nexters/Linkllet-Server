@@ -31,6 +31,17 @@ class ArticleStep {
                 .then().log().all()
                 .extract()
 
+        fun 아티클_삭제_요청(folderId: Long, firstArticleId: Long) =
+            RestAssured
+                .given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Id", "device_id")
+                .pathParam("id", folderId)
+                .pathParam("articleId", firstArticleId)
+                .`when`().delete("/api/v1/folders/{id}/articles/{articleId}")
+                .then().log().all()
+                .extract()
+
         fun 아티클_조회_응답_확인(response: ExtractableResponse<Response>, httpStatus: HttpStatus, count: Int) {
             assertAll(
                 { Assertions.assertThat(response.statusCode()).isEqualTo(httpStatus.value()) },

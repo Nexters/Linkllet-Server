@@ -67,7 +67,7 @@ class FolderAcceptanceTest : AcceptanceTest() {
         val 폴더_조회_요청_응답 = 폴더_조회_요청("device_id")
 
         // then
-        폴더_조회_응답_확인(폴더_조회_요청_응답, HttpStatus.OK, 3)
+        폴더_조회_응답_확인(폴더_조회_요청_응답, HttpStatus.OK, 4) // 기본폴더 1개 추가해서 총 4개여야 한다
     }
 
     /**
@@ -89,6 +89,6 @@ class FolderAcceptanceTest : AcceptanceTest() {
         응답_확인(폴더_삭제_응답, HttpStatus.NO_CONTENT)
 
         // then
-        폴더_조회_응답_확인(폴더_조회_요청("device_id"), HttpStatus.OK, 0)
+        폴더_조회_응답_확인(폴더_조회_요청("device_id"), HttpStatus.OK, 1)
     }
 }

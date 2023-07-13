@@ -1,14 +1,20 @@
 package nexters.linkllet.util
 
+import nexters.linkllet.folder.domain.Folder
+import nexters.linkllet.folder.domain.FolderRepository
+import nexters.linkllet.folder.domain.FolderType
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
+private const val DEFAULT_FOLDER_NAME = "default"
+
 @Component
 class DatabaseLoader(
     private val memberRepository: MemberRepository,
+    private val folderRepository: FolderRepository,
 ) {
 
     companion object {
@@ -18,7 +24,8 @@ class DatabaseLoader(
     fun loadData() {
         log.debug("[call DataLoader]")
 
-        memberRepository.save(Member("device_id"))
+        val newMember = memberRepository.save(Member("device_id"))
+        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.id, FolderType.DEFAULT))
 
         log.debug("[init complete DataLoader]")
     }

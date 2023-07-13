@@ -1,5 +1,6 @@
 package nexters.linkllet.acceptance
 
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_삭제_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_생성_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_조회_응답_확인
 import nexters.linkllet.acceptance.ArticleStep.Companion.폴더의_모든_아티클_조회_요청
@@ -59,5 +60,33 @@ class ArticleAcceptanceTest : AcceptanceTest() {
 
         // then
         아티클_조회_응답_확인(폴더_아티클_조회_응답클, HttpStatus.OK, 5)
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 있다.
+     * And: 폴더 하나가 저장되어 있다
+     * And: 폴더 내부에 링크가 5개 저장되어 있다
+     * when: 특정 링크 하나를 삭제요청한다
+     * then: 해당 링크가 성공적으로 삭제된다
+     */
+    @Test
+    fun `사용자 폴더의 특정 링크 삭제하기`() {
+        // given
+        폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+        val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
+
+        아티클_생성_요청("device_id", folderId, "article_name_1")
+        아티클_생성_요청("device_id", folderId, "article_name_2")
+        아티클_생성_요청("device_id", folderId, "article_name_3")
+        아티클_생성_요청("device_id", folderId, "article_name_4")
+        아티클_생성_요청("device_id", folderId, "article_name_5")
+
+        val firstArticleId = 폴더의_모든_아티클_조회_요청(folderId).jsonPath().getLong("articleList[0].id")
+
+        // when
+        아티클_삭제_요청(folderId, firstArticleId)
+
+        // then
+        아티클_조회_응답_확인(폴더의_모든_아티클_조회_요청(folderId), HttpStatus.OK, 4)
     }
 }
