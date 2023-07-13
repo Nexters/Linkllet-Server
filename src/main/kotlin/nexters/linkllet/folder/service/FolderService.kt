@@ -67,4 +67,15 @@ class FolderService(
 
         return ArticleLookupListResponse(articleDtoList)
     }
+
+    fun deleteArticleAtFolder(folderId: Long, articleId: Long, deviceId: String) {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+        val findFolder = folderRepository.findByIdOrThrow(folderId)
+
+        if(!findFolder.isFolderOwnerId(findMember.id)) {
+            throw IllegalStateException("본인의 폴더가 아닙니다")
+        }
+
+        findFolder.deleteArticleById(articleId)
+    }
 }

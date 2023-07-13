@@ -43,4 +43,14 @@ class FolderCommandApi(
         folderService.addArticleAtFolder(id, request.name, request.url, deviceId)
         return ResponseEntity.ok().build()
     }
+
+    @DeleteMapping("/{id}/articles/{articleId}")
+    fun createArticle(
+        @PathVariable id: Long,
+        @PathVariable articleId: Long,
+        @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+    ): ResponseEntity<Unit> {
+        folderService.deleteArticleAtFolder(id, articleId, deviceId)
+        return ResponseEntity.noContent().build()
+    }
 }
