@@ -22,11 +22,11 @@ class DatabaseLoader(
     }
 
     fun loadData() {
-        log.debug("[call DataLoader]")
+        log.info("[call DataLoader]")
 
         val newMember = memberRepository.save(Member("device_id"))
         folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
 
-        log.debug("[init complete DataLoader]")
+        log.info("[init complete DataLoader]")
     }
 }
