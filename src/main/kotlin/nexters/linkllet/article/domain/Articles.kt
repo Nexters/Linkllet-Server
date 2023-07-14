@@ -40,5 +40,12 @@ class Articles {
         this.articles.clear()
     }
 
-    private fun isValidSize() = this.articles.size < MAX_FOLDER_SIZE
+    fun deleteById(articleId: Long) {
+        val findArticle = this.articles
+            .first { it.getId == articleId }
+
+        this.articles.remove(findArticle)
+    }
+
+    private fun isValidSize() = this.articles.size <= MAX_FOLDER_SIZE
 }

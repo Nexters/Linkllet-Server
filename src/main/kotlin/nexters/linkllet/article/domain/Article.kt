@@ -11,7 +11,7 @@ class Article(
     _link: String,
 
     @Column(name = "title", nullable = false)
-    private var _title: String,
+    private var title: String,
 
     @Column(name = "member_id", nullable = false)
     private val memberId: Long = 0L,
@@ -33,8 +33,17 @@ class Article(
         this.link = Link(_link)
     }
 
-    val title: String
-        get() = this._title
+    val getId: Long
+        get() = this.id
+
+    val getTitle: String
+        get() = this.title
+
+    val getLink: String
+        get() = this.link.value
+
+    val getMemberId: Long
+        get() = this.memberId
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -42,12 +51,12 @@ class Article(
 
         other as Article
 
-        if (_title != other._title) return false
+        if (title != other.title) return false
         return id == other.id
     }
 
     override fun hashCode(): Int {
-        var result = _title.hashCode()
+        var result = title.hashCode()
         result = 31 * result + id.hashCode()
         return result
     }

@@ -1,4 +1,4 @@
-package nexters.linkllet.acceptance
+package nexters.linkllet.util
 
 import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext

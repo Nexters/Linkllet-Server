@@ -10,10 +10,14 @@ import javax.persistence.*
 class Folder(
 
     @Column(name = "name", nullable = false)
-    private var name: String,
+    var name: String,
 
     @Column(name = "member_id", nullable = false)
-    private val memberId: Long = 0L,
+    private var memberId: Long = 0L,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private val type: FolderType = FolderType.PERSONALIZED,
 
     @Id
     @Column(name = "folder_id")
@@ -24,7 +28,17 @@ class Folder(
     @Embedded
     private val articles: Articles = Articles()
 
+    val getId: Long
+        get() = this.id
+
+    val getType: FolderType
+        get() = this.type
+
     fun addArticle(article: Article) {
+        if (!this.isFolderOwnerId(article.getMemberId)) {
+            throw IllegalStateException("본인의 폴더가 아닙니다")
+        }
+
         this.articles.add(article)
     }
 
@@ -36,12 +50,24 @@ class Folder(
         return articles.getArticles()
     }
 
+    fun deleteArticleById(articleId: Long, memberId: Long) {
+        if (!this.isFolderOwnerId(memberId)) {
+            throw IllegalStateException("본인의 폴더가 아닙니다")
+        }
+
+        this.articles.deleteById(articleId)
+    }
+
     fun deleteArticle(article: Article) {
         this.articles.delete(article)
     }
 
     fun deleteAll() {
         this.articles.deleteAll()
+    }
+
+    fun isFolderOwnerId(memberId: Long): Boolean {
+        return this.memberId == memberId
     }
 
     override fun equals(other: Any?): Boolean {

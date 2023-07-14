@@ -1,9 +1,8 @@
-package nexters.linkllet.acceptance
+package nexters.linkllet.util
 
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.Entity
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.Table
