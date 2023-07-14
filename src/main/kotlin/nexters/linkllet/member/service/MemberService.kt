@@ -19,6 +19,6 @@ class MemberService(
 
     fun signUp(deviceId: String) {
         val newMember = memberRepository.save(Member(deviceId))
-        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.id, FolderType.DEFAULT))
+        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
     }
 }

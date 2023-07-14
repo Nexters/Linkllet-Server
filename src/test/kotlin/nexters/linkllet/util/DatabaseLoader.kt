@@ -25,7 +25,7 @@ class DatabaseLoader(
         log.debug("[call DataLoader]")
 
         val newMember = memberRepository.save(Member("device_id"))
-        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.id, FolderType.DEFAULT))
+        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
 
         log.debug("[init complete DataLoader]")
     }

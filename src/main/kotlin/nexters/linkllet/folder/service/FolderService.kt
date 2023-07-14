@@ -12,7 +12,6 @@ import nexters.linkllet.member.domain.MemberRepository
 import nexters.linkllet.member.domain.findByDeviceIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.streams.toList
 
 @Service
 @Transactional
@@ -24,18 +23,18 @@ class FolderService(
     fun createFolder(folderName: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        if (folderRepository.existsByMemberIdAndName(findMember.id, folderName)) {
+        if (folderRepository.existsByMemberIdAndName(findMember.getId, folderName)) {
             throw IllegalStateException("이미 사용된 폴더 이름 입니다")
         }
 
-        folderRepository.save(Folder(folderName, findMember.id))
+        folderRepository.save(Folder(folderName, findMember.getId))
     }
 
     @Transactional(readOnly = true)
     fun lookupFolderList(deviceId: String): FolderLookupListResponse {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        return folderRepository.findAllByMemberId(findMember.id)
+        return folderRepository.findAllByMemberId(findMember.getId)
                 .map { FolderLookupDto.of(it) }
                 .let(::FolderLookupListResponse)
     }
@@ -43,14 +42,14 @@ class FolderService(
     fun deleteFolder(folderId: Long, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        folderRepository.deleteByMemberIdAndId(findMember.id, folderId)
+        folderRepository.deleteByMemberIdAndId(findMember.getId, folderId)
     }
 
     fun addArticleAtFolder(folderId: Long, name: String, url: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
-        findFolder.addArticle(Article(url, name, findMember.id, findFolder))
+        findFolder.addArticle(Article(url, name, findMember.getId, findFolder))
     }
 
     @Transactional(readOnly = true)
@@ -65,6 +64,6 @@ class FolderService(
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
-        findFolder.deleteArticleById(articleId, findMember.id)
+        findFolder.deleteArticleById(articleId, findMember.getId)
     }
 }
