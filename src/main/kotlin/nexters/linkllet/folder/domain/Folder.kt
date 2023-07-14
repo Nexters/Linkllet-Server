@@ -31,6 +31,9 @@ class Folder(
     val getId: Long
         get() = this.id
 
+    val getType: FolderType
+        get() = this.type
+
     fun addArticle(article: Article) {
         if (!this.isFolderOwnerId(article.getMemberId)) {
             throw IllegalStateException("본인의 폴더가 아닙니다")
