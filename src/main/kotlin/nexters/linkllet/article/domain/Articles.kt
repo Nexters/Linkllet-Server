@@ -42,8 +42,7 @@ class Articles {
 
     fun deleteById(articleId: Long) {
         val findArticle = this.articles
-            .filter { it.getId == articleId }
-            .first()
+            .first { it.getId == articleId }
 
         this.articles.remove(findArticle)
     }

@@ -35,13 +35,9 @@ class FolderService(
     fun lookupFolderList(deviceId: String): FolderLookupListResponse {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        val folderDtoList = folderRepository
-            .findAllByMemberId(findMember.id)
-            .stream()
-            .map(FolderLookupDto::of)
-            .toList()
-
-        return FolderLookupListResponse(folderDtoList)
+        return folderRepository.findAllByMemberId(findMember.id)
+                .map { FolderLookupDto.of(it) }
+                .let(::FolderLookupListResponse)
     }
 
     fun deleteFolder(folderId: Long, deviceId: String) {
@@ -59,13 +55,10 @@ class FolderService(
 
     @Transactional(readOnly = true)
     fun lookupArticleList(folderId: Long, deviceId: String): ArticleLookupListResponse {
-        val articleDtoList = folderRepository.findByIdOrThrow(folderId)
-            .getArticles()
-            .stream()
-            .map(ArticleLookupDto::of)
-            .toList()
-
-        return ArticleLookupListResponse(articleDtoList)
+        return folderRepository.findByIdOrThrow(folderId)
+                .getArticles()
+                .map { ArticleLookupDto.of(it) }
+                .let(::ArticleLookupListResponse)
     }
 
     fun deleteArticleAtFolder(folderId: Long, articleId: Long, deviceId: String) {
