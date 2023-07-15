@@ -1,6 +1,7 @@
 package nexters.linkllet.domain.folder
 
 import nexters.linkllet.article.domain.Article
+import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.folder.domain.Folder
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Assertions.*
@@ -24,7 +25,7 @@ class FolderTest {
         folder.addArticle(articleTwo)
 
         // then
-        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_2");
+        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_2")
     }
 
     @Test
@@ -40,7 +41,7 @@ class FolderTest {
         folder.addAllArticle(articleOne, articleTwo, articleThree)
 
         // then
-        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_2", "article_3");
+        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_2", "article_3")
     }
 
     @Test
@@ -57,7 +58,7 @@ class FolderTest {
         folder.deleteArticle(articleTwo)
 
         // then
-        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3");
+        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3")
     }
 
     @Test
@@ -74,7 +75,7 @@ class FolderTest {
         folder.deleteArticleById(2L, folder.getId)
 
         // then
-        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3");
+        assertThat(folder.getArticles()).extracting("title").containsExactly("article_1", "article_3")
     }
 
     @Test
@@ -104,12 +105,12 @@ class FolderTest {
         }
 
         // when, then
-        assertThrows<IllegalStateException> {
+        assertThrows<BadRequestException> {
             folder.addArticle(
-                Article(
-                    "https://blogshine.tistory.com/temp",
-                    "article_temp"
-                )
+                    Article(
+                            "https://blogshine.tistory.com/temp",
+                            "article_temp"
+                    )
             )
         }
     }

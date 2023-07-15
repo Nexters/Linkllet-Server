@@ -1,6 +1,7 @@
 package nexters.linkllet.domain.article
 
 import nexters.linkllet.article.domain.Article
+import nexters.linkllet.common.exception.dto.BadRequestException
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -22,6 +23,6 @@ class ArticleTest {
     @ParameterizedTest
     @ValueSource(strings = ["http//www.gurubee.net/postgresql/basic", "https:/blogshine.tistory.com/", "https://kth990303."])
     fun article_invalid_uri(uri: String) {
-        assertThrows<IllegalArgumentException> { Article(uri, "test") }
+        assertThrows<BadRequestException> { Article(uri, "test") }
     }
 }

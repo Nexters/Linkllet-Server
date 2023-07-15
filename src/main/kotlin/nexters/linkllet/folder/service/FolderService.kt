@@ -1,6 +1,7 @@
 package nexters.linkllet.folder.service
 
 import nexters.linkllet.article.domain.Article
+import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.folder.domain.Folder
 import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.findByIdOrThrow
@@ -24,7 +25,7 @@ class FolderService(
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
         if (folderRepository.existsByMemberIdAndName(findMember.getId, folderName)) {
-            throw IllegalStateException("이미 사용된 폴더 이름 입니다")
+            throw BadRequestException("이미 사용된 폴더 이름 입니다")
         }
 
         folderRepository.save(Folder(folderName, findMember.getId))
