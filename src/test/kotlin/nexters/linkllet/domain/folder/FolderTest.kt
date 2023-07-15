@@ -101,7 +101,7 @@ class FolderTest {
         // given
         val folder = Folder("article_folder")
         for (i in 0..50) {
-            folder.addArticle(Article("https://blogshine.tistory.com/" + i, "article_" + i))
+            folder.addArticle(Article("https://blogshine.tistory.com/$i", "article_$i"))
         }
 
         // when, then
