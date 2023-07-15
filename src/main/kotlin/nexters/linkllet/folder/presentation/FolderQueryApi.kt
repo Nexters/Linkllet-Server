@@ -3,6 +3,7 @@ package nexters.linkllet.folder.presentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import nexters.linkllet.common.support.AccessDeviceId
 import nexters.linkllet.folder.dto.ArticleLookupListResponse
 import nexters.linkllet.folder.dto.FolderLookupListResponse
 import nexters.linkllet.folder.service.FolderService
@@ -16,15 +17,11 @@ class FolderQueryApi(
         private val folderService: FolderService,
 ) {
 
-    companion object {
-        private const val DEVICE_ID_HEADER_KEY: String = "Device-Id"
-    }
-
     @Operation(summary = "폴더 목록 조회")
     @SecurityRequirement(name = "DeviceId")
     @GetMapping
     fun lookUpFolderList(
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<FolderLookupListResponse> {
         val lookupDtoList = folderService.lookupFolderList(deviceId)
         return ResponseEntity.ok().body(lookupDtoList)
@@ -35,7 +32,7 @@ class FolderQueryApi(
     @GetMapping("/{id}/articles")
     fun lookUpArticleList(
             @PathVariable id: Long,
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<ArticleLookupListResponse> {
         val lookupDtoList = folderService.lookupArticleList(id, deviceId)
         return ResponseEntity.ok().body(lookupDtoList)

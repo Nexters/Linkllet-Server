@@ -3,6 +3,7 @@ package nexters.linkllet.folder.presentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import nexters.linkllet.common.support.AccessDeviceId
 import nexters.linkllet.folder.dto.ArticleCreateRequest
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.folder.service.FolderService
@@ -16,16 +17,12 @@ class FolderCommandApi(
         private val folderService: FolderService,
 ) {
 
-    companion object {
-        private const val DEVICE_ID_HEADER_KEY: String = "Device-Id"
-    }
-
     @Operation(summary = "폴더 생성")
     @SecurityRequirement(name = "DeviceId")
     @PostMapping
     fun createFolder(
             @RequestBody request: FolderCreateRequest,
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.createFolder(request.name, deviceId)
         return ResponseEntity.ok().build()
@@ -36,7 +33,7 @@ class FolderCommandApi(
     @DeleteMapping("/{id}")
     fun deleteFolder(
             @PathVariable id: Long,
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.deleteFolder(id, deviceId)
         return ResponseEntity.noContent().build()
@@ -48,7 +45,7 @@ class FolderCommandApi(
     fun createArticle(
             @PathVariable id: Long,
             @RequestBody request: ArticleCreateRequest,
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.addArticleAtFolder(id, request.name, request.url, deviceId)
         return ResponseEntity.ok().build()
@@ -57,10 +54,10 @@ class FolderCommandApi(
     @Operation(summary = "링크 삭제")
     @SecurityRequirement(name = "DeviceId")
     @DeleteMapping("/{id}/articles/{articleId}")
-    fun deleteArticle(
+    fun createArticle(
             @PathVariable id: Long,
             @PathVariable articleId: Long,
-            @RequestHeader(DEVICE_ID_HEADER_KEY) deviceId: String,
+            @AccessDeviceId deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.deleteArticleAtFolder(id, articleId, deviceId)
         return ResponseEntity.noContent().build()
