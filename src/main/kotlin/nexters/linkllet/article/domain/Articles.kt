@@ -11,7 +11,7 @@ class Articles {
     private val articles: MutableList<Article> = mutableListOf()
 
     companion object {
-        private val MAX_FOLDER_SIZE = 50
+        private const val MAX_FOLDER_SIZE = 50
     }
 
     fun add(article: Article) {
