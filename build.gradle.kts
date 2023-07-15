@@ -35,6 +35,9 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // Swagger
+    implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
+
     // Test Container
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
