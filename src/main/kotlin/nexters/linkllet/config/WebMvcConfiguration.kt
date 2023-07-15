@@ -18,6 +18,6 @@ class WebMvcConfiguration(
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("*")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
     }
 }
