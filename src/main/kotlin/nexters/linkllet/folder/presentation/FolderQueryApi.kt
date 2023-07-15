@@ -18,7 +18,7 @@ class FolderQueryApi(
 ) {
 
     @Operation(summary = "폴더 목록 조회")
-    @SecurityRequirement(name = "DeviceId")
+    @SecurityRequirement(name = "Device-Id")
     @GetMapping
     fun lookUpFolderList(
             @AccessDeviceId deviceId: String,
@@ -28,7 +28,7 @@ class FolderQueryApi(
     }
 
     @Operation(summary = "기사 목록 조회")
-    @SecurityRequirement(name = "DeviceId")
+    @SecurityRequirement(name = "Device-Id")
     @GetMapping("/{id}/articles")
     fun lookUpArticleList(
             @PathVariable id: Long,
