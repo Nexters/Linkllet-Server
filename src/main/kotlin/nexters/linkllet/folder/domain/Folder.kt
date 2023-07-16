@@ -3,7 +3,7 @@ package nexters.linkllet.folder.domain
 import nexters.linkllet.article.domain.Article
 import nexters.linkllet.article.domain.Articles
 import nexters.linkllet.common.domain.BaseTimeEntity
-import nexters.linkllet.common.exception.dto.BadRequestException
+import nexters.linkllet.common.exception.dto.ForbiddenException
 import javax.persistence.*
 
 @Entity
@@ -37,7 +37,7 @@ class Folder(
 
     fun addArticle(article: Article) {
         if (!this.isFolderOwnerId(article.getMemberId)) {
-            throw BadRequestException("본인의 폴더가 아닙니다")
+            throw ForbiddenException("본인의 폴더가 아닙니다")
         }
 
         this.articles.add(article)
@@ -53,7 +53,7 @@ class Folder(
 
     fun deleteArticleById(articleId: Long, memberId: Long) {
         if (!this.isFolderOwnerId(memberId)) {
-            throw BadRequestException("본인의 폴더가 아닙니다")
+            throw ForbiddenException("본인의 폴더가 아닙니다")
         }
 
         this.articles.deleteById(articleId)

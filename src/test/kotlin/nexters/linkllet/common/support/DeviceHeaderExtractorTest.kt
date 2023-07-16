@@ -2,7 +2,7 @@ package nexters.linkllet.common.support
 
 import io.mockk.every
 import io.mockk.mockk
-import nexters.linkllet.common.exception.dto.UnAuthorizedException
+import nexters.linkllet.common.exception.dto.UnauthorizedException
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -35,6 +35,6 @@ class DeviceHeaderExtractorTest {
 
         // when
         // then
-        assertThrows<UnAuthorizedException> { DeviceHeaderExtractor.extractDeviceId(request) }
+        assertThrows<UnauthorizedException> { DeviceHeaderExtractor.extractDeviceId(request) }
     }
 }
