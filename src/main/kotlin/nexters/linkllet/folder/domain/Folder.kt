@@ -3,26 +3,27 @@ package nexters.linkllet.folder.domain
 import nexters.linkllet.article.domain.Article
 import nexters.linkllet.article.domain.Articles
 import nexters.linkllet.common.domain.BaseTimeEntity
+import nexters.linkllet.common.exception.dto.ForbiddenException
 import javax.persistence.*
 
 @Entity
 @Table(name = "folder")
 class Folder(
 
-    @Column(name = "name", nullable = false)
-    var name: String,
+        @Column(name = "name", nullable = false)
+        var name: String,
 
-    @Column(name = "member_id", nullable = false)
-    private var memberId: Long = 0L,
+        @Column(name = "member_id", nullable = false)
+        private var memberId: Long = 0L,
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private val type: FolderType = FolderType.PERSONALIZED,
+        @Enumerated(EnumType.STRING)
+        @Column(name = "type", nullable = false)
+        private val type: FolderType = FolderType.PERSONALIZED,
 
-    @Id
-    @Column(name = "folder_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long = 0L,
+        @Id
+        @Column(name = "folder_id")
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private val id: Long = 0L,
 ) : BaseTimeEntity() {
 
     @Embedded
@@ -36,7 +37,7 @@ class Folder(
 
     fun addArticle(article: Article) {
         if (!this.isFolderOwnerId(article.getMemberId)) {
-            throw IllegalStateException("본인의 폴더가 아닙니다")
+            throw ForbiddenException("본인의 폴더가 아닙니다")
         }
 
         this.articles.add(article)
@@ -52,7 +53,7 @@ class Folder(
 
     fun deleteArticleById(articleId: Long, memberId: Long) {
         if (!this.isFolderOwnerId(memberId)) {
-            throw IllegalStateException("본인의 폴더가 아닙니다")
+            throw ForbiddenException("본인의 폴더가 아닙니다")
         }
 
         this.articles.deleteById(articleId)

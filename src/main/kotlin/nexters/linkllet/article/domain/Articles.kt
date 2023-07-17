@@ -1,5 +1,6 @@
 package nexters.linkllet.article.domain
 
+import nexters.linkllet.common.exception.dto.BadRequestException
 import javax.persistence.CascadeType
 import javax.persistence.Embeddable
 import javax.persistence.OneToMany
@@ -15,13 +16,13 @@ class Articles {
     }
 
     fun add(article: Article) {
-        if (!isValidSize()) throw IllegalStateException("폴더가 가득 찼습니다.")
+        if (!isValidSize()) throw BadRequestException("폴더가 가득 찼습니다.")
 
         this.articles.add(article)
     }
 
     fun addAll(vararg article: Article) {
-        if (!isValidSize()) throw IllegalStateException("폴더가 가득 찼습니다.")
+        if (!isValidSize()) throw BadRequestException("폴더가 가득 찼습니다.")
 
         this.articles.addAll(article)
     }
@@ -42,7 +43,7 @@ class Articles {
 
     fun deleteById(articleId: Long) {
         val findArticle = this.articles
-            .first { it.getId == articleId }
+                .first { it.getId == articleId }
 
         this.articles.remove(findArticle)
     }

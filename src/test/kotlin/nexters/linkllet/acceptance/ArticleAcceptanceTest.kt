@@ -8,7 +8,9 @@ import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_생성_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
 import nexters.linkllet.folder.dto.FolderCreateRequest
+import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -34,6 +36,28 @@ class ArticleAcceptanceTest : AcceptanceTest() {
 
         // then
         응답_확인(아티클_생성_응답, HttpStatus.OK)
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 두 명(device_id, kth990303) 존재한다.
+     * And: 특정 사용자(kth990303)가 폴더를 생성한다
+     * when: 다른 사용자(device_id)가 특정 링크를 저장한다
+     * then: 링크가 저장될 때 예외를 반환한다
+     */
+    @Test
+    fun `본인 폴더가 아닌 폴더에 링크 저장 시 예외 반환`() {
+        // given
+        val otherDeviceId = "kth990303"
+        MemberStep.회원_가입_요청(MemberSignUpRequest(otherDeviceId))
+
+        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder_name"))
+        val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
+
+        // when
+        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article_name")
+
+        // then
+        응답_확인(아티클_생성_응답, HttpStatus.FORBIDDEN)
     }
 
     /**
@@ -88,5 +112,31 @@ class ArticleAcceptanceTest : AcceptanceTest() {
 
         // then
         아티클_조회_응답_확인(폴더의_모든_아티클_조회_요청(folderId), HttpStatus.OK, 4)
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 두 명(device_id, kth990303) 존재한다.
+     * And: 특정 사용자(kth990303)가 폴더를 생성하고 링크를 저장한다
+     * when: 다른 사용자(device_id)가 특정 링크 하나를 삭제요청한다
+     * then: 링크가 삭제될 때 예외를 반환한다
+     */
+    @Test
+    fun `본인 폴더가 아닌 폴더에 링크 삭제 시 예외 반환`() {
+        // given
+        val otherDeviceId = "kth990303"
+        MemberStep.회원_가입_요청(MemberSignUpRequest(otherDeviceId))
+
+        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder_name"))
+
+        val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
+
+        아티클_생성_요청(otherDeviceId, folderId, "article_name_1")
+        val firstArticleId = 폴더의_모든_아티클_조회_요청(folderId).jsonPath().getLong("articleList[0].id")
+
+        // when
+        val actual = 아티클_삭제_요청(folderId, firstArticleId)
+
+        // then
+        Assertions.assertThat(actual.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value())
     }
 }
