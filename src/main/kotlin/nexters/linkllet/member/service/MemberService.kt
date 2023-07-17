@@ -20,7 +20,7 @@ class MemberService(
 
     fun signUp(deviceId: String) {
         memberRepository.findByDeviceId(deviceId)
-            ?: throw ConflictException()
+            ?.let { throw ConflictException() }
 
         val newMember = memberRepository.save(Member(deviceId))
         folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
