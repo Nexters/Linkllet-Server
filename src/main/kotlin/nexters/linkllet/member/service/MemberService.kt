@@ -1,5 +1,6 @@
 package nexters.linkllet.member.service
 
+import nexters.linkllet.common.exception.dto.ConflictException
 import nexters.linkllet.folder.domain.Folder
 import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.FolderType
@@ -18,6 +19,9 @@ class MemberService(
 ) {
 
     fun signUp(deviceId: String) {
+        memberRepository.findByDeviceId(deviceId)
+            ?.let { throw ConflictException() }
+
         val newMember = memberRepository.save(Member(deviceId))
         folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
     }
