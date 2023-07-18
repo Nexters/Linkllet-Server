@@ -32,10 +32,30 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
         // when
-        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article_name")
+        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article")
 
         // then
         응답_확인(아티클_생성_응답, HttpStatus.OK)
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 있다.
+     * And: 폴더 하나가 저장되어 있다
+     * And: 폴더를 조회하여 생성된 폴더 id를 조회한다
+     * when: 조회된 id에 해당하는 폴더에 링크의 제목이 10자가 넘는 경우의 요청 시
+     * then: 예외를 반환한다
+     */
+    @Test
+    fun `사용자 폴더에 링크 저장할 때 제목 10자 초과 시 예외 반환`() {
+        // given
+        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
+        val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
+
+        // when
+        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article_name")
+
+        // then
+        응답_확인(아티클_생성_응답, HttpStatus.BAD_REQUEST)
     }
 
     /**
@@ -54,7 +74,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
 
         // when
-        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article_name")
+        val 아티클_생성_응답 = 아티클_생성_요청("device_id", folderId, "article")
 
         // then
         응답_확인(아티클_생성_응답, HttpStatus.FORBIDDEN)
@@ -73,11 +93,11 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         폴더_생성_요청("device_id", FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
-        아티클_생성_요청("device_id", folderId, "article_name_1")
-        아티클_생성_요청("device_id", folderId, "article_name_2")
-        아티클_생성_요청("device_id", folderId, "article_name_3")
-        아티클_생성_요청("device_id", folderId, "article_name_4")
-        아티클_생성_요청("device_id", folderId, "article_name_5")
+        아티클_생성_요청("device_id", folderId, "article_1")
+        아티클_생성_요청("device_id", folderId, "article_2")
+        아티클_생성_요청("device_id", folderId, "article_3")
+        아티클_생성_요청("device_id", folderId, "article_4")
+        아티클_생성_요청("device_id", folderId, "article_5")
 
         // when
         val 폴더_아티클_조회_응답클 = 폴더의_모든_아티클_조회_요청(folderId)
@@ -99,11 +119,11 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         폴더_생성_요청("device_id", FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
-        아티클_생성_요청("device_id", folderId, "article_name_1")
-        아티클_생성_요청("device_id", folderId, "article_name_2")
-        아티클_생성_요청("device_id", folderId, "article_name_3")
-        아티클_생성_요청("device_id", folderId, "article_name_4")
-        아티클_생성_요청("device_id", folderId, "article_name_5")
+        아티클_생성_요청("device_id", folderId, "article_1")
+        아티클_생성_요청("device_id", folderId, "article_2")
+        아티클_생성_요청("device_id", folderId, "article_3")
+        아티클_생성_요청("device_id", folderId, "article_4")
+        아티클_생성_요청("device_id", folderId, "article_5")
 
         val firstArticleId = 폴더의_모든_아티클_조회_요청(folderId).jsonPath().getLong("articleList[0].id")
 
@@ -130,7 +150,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
 
         val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
 
-        아티클_생성_요청(otherDeviceId, folderId, "article_name_1")
+        아티클_생성_요청(otherDeviceId, folderId, "article_1")
         val firstArticleId = 폴더의_모든_아티클_조회_요청(folderId).jsonPath().getLong("articleList[0].id")
 
         // when

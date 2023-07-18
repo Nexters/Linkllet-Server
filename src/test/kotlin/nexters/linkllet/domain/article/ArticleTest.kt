@@ -5,6 +5,7 @@ import nexters.linkllet.common.exception.dto.BadRequestException
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -24,5 +25,11 @@ class ArticleTest {
     @ValueSource(strings = ["http//www.gurubee.net/postgresql/basic", "https:/blogshine.tistory.com/", "https://kth990303."])
     fun article_invalid_uri(uri: String) {
         assertThrows<BadRequestException> { Article(uri, "test") }
+    }
+
+    @Test
+    @DisplayName("링크 제목을 10자를 초과하면 예외를 반환")
+    fun change_long_folder_name() {
+        assertThrows<BadRequestException> { Article("https://kth990303.tistory.com/", "test_test_t") }
     }
 }
