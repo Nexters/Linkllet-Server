@@ -28,7 +28,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더에 링크 저장하기`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
         // when
@@ -50,7 +50,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val otherDeviceId = "kth990303"
         MemberStep.회원_가입_요청(MemberSignUpRequest(otherDeviceId))
 
-        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder_name"))
+        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
 
         // when
@@ -70,7 +70,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더에 모든 링크 조회하기`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
         아티클_생성_요청("device_id", folderId, "article_name_1")
@@ -96,7 +96,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더의 특정 링크 삭제하기`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
 
         아티클_생성_요청("device_id", folderId, "article_name_1")
@@ -126,7 +126,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val otherDeviceId = "kth990303"
         MemberStep.회원_가입_요청(MemberSignUpRequest(otherDeviceId))
 
-        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder_name"))
+        폴더_생성_요청(otherDeviceId, FolderCreateRequest("folder"))
 
         val folderId = 폴더_조회_요청(otherDeviceId).jsonPath().getLong("folderList[0].id")
 

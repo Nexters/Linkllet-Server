@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import nexters.linkllet.common.support.AccessDeviceId
 import nexters.linkllet.folder.dto.ArticleCreateRequest
 import nexters.linkllet.folder.dto.FolderCreateRequest
+import nexters.linkllet.folder.dto.FolderUpdateRequest
 import nexters.linkllet.folder.service.FolderService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -26,6 +27,18 @@ class FolderCommandApi(
     ): ResponseEntity<Unit> {
         folderService.createFolder(request.name, deviceId)
         return ResponseEntity.ok().build()
+    }
+
+    @Operation(summary = "폴더명 변경")
+    @SecurityRequirement(name = "Device-Id")
+    @PutMapping("/{id}")
+    fun updateFolder(
+            @PathVariable id: Long,
+            @RequestBody request: FolderUpdateRequest,
+            @AccessDeviceId deviceId: String,
+    ): ResponseEntity<Unit> {
+        folderService.updateFolderName(id, request.updateName, deviceId)
+        return ResponseEntity.noContent().build()
     }
 
     @Operation(summary = "폴더 삭제")

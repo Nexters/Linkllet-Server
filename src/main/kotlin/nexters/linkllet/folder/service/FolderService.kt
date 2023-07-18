@@ -9,6 +9,7 @@ import nexters.linkllet.folder.dto.ArticleLookupDto
 import nexters.linkllet.folder.dto.ArticleLookupListResponse
 import nexters.linkllet.folder.dto.FolderLookupDto
 import nexters.linkllet.folder.dto.FolderLookupListResponse
+import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
 import nexters.linkllet.member.domain.findByDeviceIdOrThrow
 import org.springframework.stereotype.Service
@@ -17,16 +18,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class FolderService(
-    private val folderRepository: FolderRepository,
-    private val memberRepository: MemberRepository,
+        private val folderRepository: FolderRepository,
+        private val memberRepository: MemberRepository,
 ) {
 
     fun createFolder(folderName: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        if (folderRepository.existsByMemberIdAndName(findMember.getId, folderName)) {
-            throw BadRequestException("이미 사용된 폴더 이름 입니다")
-        }
+        validateDuplicateFolderName(findMember, folderName)
 
         folderRepository.save(Folder(folderName, findMember.getId))
     }
@@ -39,6 +38,21 @@ class FolderService(
                 .map { FolderLookupDto.of(it) }
                 .let(::FolderLookupListResponse)
     }
+
+    fun updateFolderName(folderId: Long, updateName: String, deviceId: String) {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+        validateDuplicateFolderName(findMember, updateName)
+
+        val findFolder = folderRepository.findByIdOrThrow(folderId)
+        findFolder.changeFolderName(updateName)
+    }
+
+    private fun validateDuplicateFolderName(findMember: Member, folderName: String) {
+        if (folderRepository.existsByMemberIdAndName(findMember.getId, folderName)) {
+            throw BadRequestException("이미 사용된 폴더 이름 입니다")
+        }
+    }
+
 
     fun deleteFolder(folderId: Long, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
