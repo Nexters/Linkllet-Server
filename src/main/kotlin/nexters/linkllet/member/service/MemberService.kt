@@ -9,7 +9,7 @@ import nexters.linkllet.member.domain.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val DEFAULT_FOLDER_NAME = "default"
+private const val DEFAULT_FOLDER_NAME = "Default"
 
 @Transactional
 @Service
@@ -22,7 +22,21 @@ class MemberService(
         memberRepository.findByDeviceId(deviceId)
             ?.let { throw ConflictException() }
 
+        initMember(deviceId)
+    }
+
+    private fun initMember(deviceId: String) {
         val newMember = memberRepository.save(Member(deviceId))
-        folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
+        createStartFolder(newMember)
+    }
+
+    private fun createStartFolder(newMember: Member) {
+        folderRepository.saveAll(
+            listOf(
+                Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT),
+                Folder("Folder 1", newMember.getId, FolderType.PERSONALIZED),
+                Folder("Folder 2", newMember.getId, FolderType.PERSONALIZED)
+            )
+        )
     }
 }
