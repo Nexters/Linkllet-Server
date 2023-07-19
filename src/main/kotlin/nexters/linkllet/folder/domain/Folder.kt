@@ -3,8 +3,11 @@ package nexters.linkllet.folder.domain
 import nexters.linkllet.article.domain.Article
 import nexters.linkllet.article.domain.Articles
 import nexters.linkllet.common.domain.BaseTimeEntity
+import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.common.exception.dto.ForbiddenException
 import javax.persistence.*
+
+private const val FOLDER_NAME_LENGTH_LIMIT = 10
 
 @Entity
 @Table(name = "folder")
@@ -28,6 +31,10 @@ class Folder(
 
     @Embedded
     private val articles: Articles = Articles()
+
+    init {
+        validateFolderName(name)
+    }
 
     val getId: Long
         get() = this.id
@@ -69,6 +76,17 @@ class Folder(
 
     fun isFolderOwnerId(memberId: Long): Boolean {
         return this.memberId == memberId
+    }
+
+    fun changeFolderName(name: String) {
+        validateFolderName(name)
+        this.name = name
+    }
+
+    private final fun validateFolderName(name: String) {
+        if (name.length > FOLDER_NAME_LENGTH_LIMIT) {
+            throw BadRequestException("폴더명은 10자 이하여야 합니다.")
+        }
     }
 
     override fun equals(other: Any?): Boolean {
