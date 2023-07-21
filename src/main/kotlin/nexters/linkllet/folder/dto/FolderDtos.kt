@@ -1,22 +1,19 @@
 package nexters.linkllet.folder.dto
 
-import nexters.linkllet.folder.domain.Folder
+import com.querydsl.core.annotations.QueryProjection
 import nexters.linkllet.folder.domain.FolderType
 
 data class FolderCreateRequest(val name: String = "untitled")
 
 data class FolderUpdateRequest(
-        val updateName: String,
+    val updateName: String,
 )
 
-data class FolderLookupDto(
-        val id: Long,
-        val name: String,
-        val type: FolderType,
-) {
-    companion object {
-        fun of(folder: Folder): FolderLookupDto = FolderLookupDto(folder.getId, folder.name, folder.getType)
-    }
-}
+data class FolderLookupDto @QueryProjection constructor(
+    val id: Long,
+    val name: String,
+    val type: FolderType,
+    val size: Int,
+)
 
 data class FolderLookupListResponse(val folderList: List<FolderLookupDto>)
