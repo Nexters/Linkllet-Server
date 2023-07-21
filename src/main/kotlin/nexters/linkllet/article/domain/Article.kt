@@ -3,6 +3,7 @@ package nexters.linkllet.article.domain
 import nexters.linkllet.common.domain.BaseTimeEntity
 import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.folder.domain.Folder
+import java.time.LocalDateTime
 import javax.persistence.*
 
 private const val LINK_TITLE_LENGTH_LIMIT = 10
@@ -48,6 +49,9 @@ class Article(
 
     val getMemberId: Long
         get() = this.memberId
+
+    val getCreatedDateTime: LocalDateTime?
+        get() = this.createAt
 
     private fun validateArticleTitle(title: String) {
         if (title.length > LINK_TITLE_LENGTH_LIMIT) {

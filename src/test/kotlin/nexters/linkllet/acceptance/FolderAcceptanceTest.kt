@@ -1,13 +1,16 @@
 package nexters.linkllet.acceptance
 
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_생성_요청
 import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_삭제_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_생성_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더명_변경_요청
+import nexters.linkllet.acceptance.MemberStep.Companion.회원_가입_요청
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.folder.dto.FolderUpdateRequest
+import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -72,21 +75,29 @@ class FolderAcceptanceTest : AcceptanceTest() {
     /**
      * given: 회원 가입된 사용자가 있다.
      * And: 폴더가 하나가 이상 저장되어 있다
+     * And: 폴더에 아티클이 저장되어 있다
      * when: 해당 폴더들을 조회 요청시
      * then: 정상적으로 폴더 목록이 조회된다
      */
     @Test
     fun `폴더 목록 조회`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_1"))
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_2"))
-        폴더_생성_요청("device_id", FolderCreateRequest("folder_3"))
+        val deviceId = "shine"
+        회원_가입_요청(MemberSignUpRequest(deviceId))
+
+        val 폴더_조회_응답 = 폴더_조회_요청(deviceId)
+        val folderIdOne = 폴더_조회_응답.jsonPath().getLong("folderList[0].id")
+        val folderIdTwo = 폴더_조회_응답.jsonPath().getLong("folderList[1].id")
+        아티클_생성_요청(deviceId, folderIdOne, "article_1")
+        아티클_생성_요청(deviceId, folderIdOne, "article_2")
+        아티클_생성_요청(deviceId, folderIdTwo, "article_1")
+        아티클_생성_요청(deviceId, folderIdTwo, "article_2")
 
         // when
-        val 폴더_조회_요청_응답 = 폴더_조회_요청("device_id")
+        val 폴더_조회_요청_응답 = 폴더_조회_요청(deviceId)
 
         // then
-        폴더_조회_응답_확인(폴더_조회_요청_응답, HttpStatus.OK, 4) // 기본폴더 1개 추가해서 총 4개여야 한다
+        폴더_조회_응답_확인(폴더_조회_요청_응답, HttpStatus.OK, 3) // 기본폴더 1개 추가해서 총 4개여야 한다
     }
 
     /**

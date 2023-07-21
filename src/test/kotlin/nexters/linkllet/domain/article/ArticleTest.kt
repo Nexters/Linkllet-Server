@@ -15,7 +15,7 @@ class ArticleTest {
 
     @DisplayName("아티클 생성 테스트")
     @ParameterizedTest
-    @ValueSource(strings = ["http://www.gurubee.net/postgresql/basic", "https://blogshine.tistory.com/", "https://kth990303.tistory.com/"])
+    @ValueSource(strings = ["http://www.gurubee.net/postgresql/basic", "https://blogshine.tistory.com/", "https://kth990303.tistory.com/", "www.naver.com"])
     fun create_article(uri: String) {
         assertThatCode { Article(uri, "test") }.doesNotThrowAnyException()
     }
