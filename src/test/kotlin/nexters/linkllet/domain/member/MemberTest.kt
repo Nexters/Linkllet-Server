@@ -18,6 +18,6 @@ class MemberTest {
         member.addFeedback("피드백2")
 
         // then
-        assertThat(member.getAllFeedback().size).isEqualTo(2)
+        assertThat(member.getAllFeedback()).hasSize(2)
     }
 }
