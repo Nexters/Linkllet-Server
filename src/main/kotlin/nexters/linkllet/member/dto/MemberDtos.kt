@@ -1,5 +1,9 @@
 package nexters.linkllet.member.dto
 
 data class MemberSignUpRequest(
-        val deviceId: String,
+    val deviceId: String,
+)
+
+data class MemberFeedbackRequest(
+    val feedback: String,
 )

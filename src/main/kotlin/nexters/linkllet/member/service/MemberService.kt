@@ -6,6 +6,7 @@ import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.FolderType
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
+import nexters.linkllet.member.domain.findByDeviceIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,6 +24,11 @@ class MemberService(
             ?.let { throw ConflictException() }
 
         initMember(deviceId)
+    }
+
+    fun addFeedback(feedback: String, deviceId: String) {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+        findMember.addFeedback(feedback)
     }
 
     private fun initMember(deviceId: String) {
