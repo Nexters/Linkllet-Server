@@ -56,6 +56,9 @@ class Article(
         get() = this.createAt
 
     private fun validateArticleLink(link: String) {
+        if (link.isBlank()) {
+            throw BadRequestException("링크는 공백일 수 없습니다.")
+        }
         if (link.length > LINK_CONTENT_LENGTH_LIMIT) {
             throw BadRequestException("1000자를 초과하는 링크는 저장할 수 없습니다.")
         }

@@ -34,6 +34,12 @@ class ArticleTest {
     }
 
     @Test
+    @DisplayName("링크 url 공백일 경우 예외를 반환")
+    fun link_blank_validate() {
+        assertThrows<BadRequestException> { Article("", "test_test_t") }
+    }
+
+    @Test
     @DisplayName("링크 url 길이 제한 초과하면 예외를 반환")
     fun link_length_validate() {
         // length: 1001
