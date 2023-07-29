@@ -46,7 +46,7 @@ class Link(
         //Example: "/user/heartrate?foo=bar#element1".
         private const val REGEX_RESOURCE_PATH = "(?:/\\S*)?"
 
-        private val REGEX_URL = "^(?:(?:" + REGEX_SCHEME + REGEX_AUTHORATIVE_DECLARATION + ")?" +
+        private const val REGEX_URL = "^(?:(?:" + REGEX_SCHEME + REGEX_AUTHORATIVE_DECLARATION + ")?" +
                 REGEX_USERINFO + REGEX_HOST + REGEX_PORT + REGEX_RESOURCE_PATH + ")$"
 
         private val compiledLinkPattern = Pattern.compile(REGEX_URL)
