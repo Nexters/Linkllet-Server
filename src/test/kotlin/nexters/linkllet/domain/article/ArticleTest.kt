@@ -34,22 +34,21 @@ class ArticleTest {
     }
 
     @Test
-    @DisplayName("링크 url 길이 제한 테스트")
+    @DisplayName("링크 url 길이 제한 초과하면 예외를 반환")
     fun link_length_validate() {
-        // length: 1067
-        val longLink = "https://www.google.com/search?q=%EC%95%88%EB%8dsfajaslkfjasdkfjkldsafjlsa" +
-                "dkjflksajfldkadsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfalksdf" +
-                "jlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfalksdf" +
-                "jlasjf;ljlfsadjlafkj;lkdjalkfjads;jfalksdfjlasjf;ljdsfajaslkfjasdkfjkldsafjlsadkjflk" +
-                "sajfldkajlafkj;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflks" +
-                "ajfldkajlafkj;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajf" +
-                "ldkajlafkj;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldk" +
-                "ajlafkj;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajla" +
-                "fkj;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;" +
-                "lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjal" +
-                "kfjads;jfalksdfjlasjf;ljlfsadlfsadkj;lasfkj5%95%ED%95%98%EC%84%B8%EC%9A%94&oq=%EC%95%88%E" +
-                "B%85%95%ED%95%98%EC%84%B8%EC%9A%94&aqs=chrome..69i57j46i433i512l2j0i131i433i512l3j46i131i433" +
-                "i512j69i60.3640j0j7&sourceid=chrome&ie=UTF-8"
+        // length: 1001
+        val longLink = "https://www.google.com/search?q=%EC%95%88%EB%8dsfajaslkfjasdkfjkldsafjlsadkjf" +
+                "lksajfldkadsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfalksdfjlasjf;" +
+                "ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfalksdfjlasjf;ljlf" +
+                "sadjlafkj;lkdjalkfjads;jfalksdfjlasjf;ljdsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafk" +
+                "j;lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;" +
+                "lkdjalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkd" +
+                "jalkfjads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkf" +
+                "jads;jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads" +
+                ";jfalksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfal" +
+                "ksdfjlasjf;ljlfsaddsfajaslkfjasdkfjkldsafjlsadkjflksajfldkajlafkj;lkdjalkfjads;jfalksdfjl" +
+                "asjf;ljlfsadlfsadkj;lasfkj5%95%ED%95%98%EC%84%B8%EC%969i57j46i433i512l2j0i131i433i512l3j4" +
+                "6i131i433i512j69i60.3640j0j7&sourceid=chrome&ie=UTF-8"
 
         assertThrows<BadRequestException> { Article(longLink, "test") }
     }
