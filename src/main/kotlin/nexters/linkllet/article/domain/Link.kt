@@ -7,7 +7,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 class Link(
-    @Column(name = "link", nullable = false)
+    @Column(name = "link", length = 1000, nullable = false)
     private val _value: String,
 ) {
 
