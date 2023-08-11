@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.7.13"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    kotlin("kapt") version "1.7.10"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
@@ -45,6 +46,11 @@ dependencies {
     testImplementation("org.testcontainers:mysql:1.17.6")
     testImplementation("io.rest-assured:rest-assured")
     testImplementation("io.mockk:mockk:1.12.4")
+
+    // QueryDsl
+    implementation("com.querydsl:querydsl-jpa:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks.withType<KotlinCompile> {

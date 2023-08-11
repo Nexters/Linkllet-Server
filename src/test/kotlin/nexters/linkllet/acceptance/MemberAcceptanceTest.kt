@@ -1,6 +1,7 @@
 package nexters.linkllet.acceptance
 
 import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
+import nexters.linkllet.acceptance.MemberStep.Companion.피드백_요청
 import nexters.linkllet.acceptance.MemberStep.Companion.회원_가입_요청
 import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
@@ -36,5 +37,22 @@ class MemberAcceptanceTest : AcceptanceTest() {
 
         // then
         응답_확인(회원_가입_응답, HttpStatus.CONFLICT)
+    }
+
+    /**
+     * given: 회원 가입된 사용자 shine이 존재한다.
+     * when: 해당 회원이 피드백을 남긴다
+     * then: OK 상태코드를 응답한다
+     */
+    @Test
+    fun `회원 피드백 남기기`() {
+        // given
+        회원_가입_요청(MemberSignUpRequest("shine"))
+
+        // when
+        val 피드백_요청_응답 = 피드백_요청("shine", "feedback")
+
+        // then
+        응답_확인(피드백_요청_응답, HttpStatus.OK)
     }
 }

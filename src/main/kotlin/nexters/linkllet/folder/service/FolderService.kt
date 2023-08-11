@@ -7,7 +7,6 @@ import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.findByIdOrThrow
 import nexters.linkllet.folder.dto.ArticleLookupDto
 import nexters.linkllet.folder.dto.ArticleLookupListResponse
-import nexters.linkllet.folder.dto.FolderLookupDto
 import nexters.linkllet.folder.dto.FolderLookupListResponse
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
@@ -18,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class FolderService(
-        private val folderRepository: FolderRepository,
-        private val memberRepository: MemberRepository,
+    private val folderRepository: FolderRepository,
+    private val memberRepository: MemberRepository,
 ) {
 
     fun createFolder(folderName: String, deviceId: String) {
@@ -34,9 +33,8 @@ class FolderService(
     fun lookupFolderList(deviceId: String): FolderLookupListResponse {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
 
-        return folderRepository.findAllByMemberId(findMember.getId)
-                .map { FolderLookupDto.of(it) }
-                .let(::FolderLookupListResponse)
+        return folderRepository.lookupFolderDtosByMemberId(findMember.getId)
+            .let(::FolderLookupListResponse)
     }
 
     fun updateFolderName(folderId: Long, updateName: String, deviceId: String) {
@@ -70,9 +68,9 @@ class FolderService(
     @Transactional(readOnly = true)
     fun lookupArticleList(folderId: Long, deviceId: String): ArticleLookupListResponse {
         return folderRepository.findByIdOrThrow(folderId)
-                .getArticles()
-                .map { ArticleLookupDto.of(it) }
-                .let(::ArticleLookupListResponse)
+            .getArticles()
+            .map { ArticleLookupDto.of(it) }
+            .let(::ArticleLookupListResponse)
     }
 
     fun deleteArticleAtFolder(folderId: Long, articleId: Long, deviceId: String) {

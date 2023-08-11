@@ -3,8 +3,10 @@ package nexters.linkllet.article.domain
 import nexters.linkllet.common.domain.BaseTimeEntity
 import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.folder.domain.Folder
+import java.time.LocalDateTime
 import javax.persistence.*
 
+private const val LINK_CONTENT_LENGTH_LIMIT = 1000
 private const val LINK_TITLE_LENGTH_LIMIT = 10
 
 @Entity
@@ -33,6 +35,7 @@ class Article(
     private val link: Link
 
     init {
+        validateArticleLink(_link)
         validateArticleTitle(title)
         this.link = Link(_link)
     }
@@ -48,6 +51,18 @@ class Article(
 
     val getMemberId: Long
         get() = this.memberId
+
+    val getCreatedDateTime: LocalDateTime?
+        get() = this.createAt
+
+    private fun validateArticleLink(link: String) {
+        if (link.isBlank()) {
+            throw BadRequestException("링크는 공백일 수 없습니다.")
+        }
+        if (link.length > LINK_CONTENT_LENGTH_LIMIT) {
+            throw BadRequestException("1000자를 초과하는 링크는 저장할 수 없습니다.")
+        }
+    }
 
     private fun validateArticleTitle(title: String) {
         if (title.length > LINK_TITLE_LENGTH_LIMIT) {
