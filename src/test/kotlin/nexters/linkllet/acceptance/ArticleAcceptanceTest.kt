@@ -168,7 +168,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
      * then: 검색조건에 부한한 링크 목록이 반환된다.
      */
     @Test
-    fun `링크 검색`() {
+    fun `아티클 검색`() {
         // given
         val deviceId = "shine"
         MemberStep.회원_가입_요청(MemberSignUpRequest(deviceId))
