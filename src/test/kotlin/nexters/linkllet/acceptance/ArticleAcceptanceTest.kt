@@ -1,5 +1,7 @@
 package nexters.linkllet.acceptance
 
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_검색_요청
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_검색_응답_확인
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_삭제_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_생성_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_조회_응답_확인
@@ -10,7 +12,6 @@ import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
-import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -157,6 +158,35 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val actual = 아티클_삭제_요청(folderId, firstArticleId)
 
         // then
-        Assertions.assertThat(actual.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value())
+        응답_확인(actual, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 존재한다.
+     * And: 특정 사용자가 폴더를 생성하고 링크를 저장한다
+     * when: 해당 사용자가 링크 검색을 요청한다
+     * then: 검색조건에 부한한 링크 목록이 반환된다.
+     */
+    @Test
+    fun `링크 검색`() {
+        // given
+        val deviceId = "shine"
+        MemberStep.회원_가입_요청(MemberSignUpRequest(deviceId))
+
+        폴더_생성_요청(deviceId, FolderCreateRequest("folder"))
+
+        val folderId = 폴더_조회_요청(deviceId).jsonPath().getLong("folderList[0].id")
+
+        아티클_생성_요청(deviceId, folderId, "article1")
+        아티클_생성_요청(deviceId, folderId, "article2")
+        아티클_생성_요청(deviceId, folderId, "article3")
+        아티클_생성_요청(deviceId, folderId, "other1")
+        아티클_생성_요청(deviceId, folderId, "other2")
+
+        // when
+        val 아티클_검색_응답 = 아티클_검색_요청(deviceId, "article")
+
+        // then
+        아티클_검색_응답_확인(아티클_검색_응답, 3)
     }
 }
