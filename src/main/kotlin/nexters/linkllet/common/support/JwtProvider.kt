@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 @Component
 class JwtProvider(
         @Value("\${security.jwt.token.secret-key}") val secretKey: String,
-        @Value("\${security.jwt.token.validity}") val expirationTime: Long,
+        @Value("\${security.jwt.token.expire-length}") val expirationTime: Long,
 ) {
     private val signingKey: SecretKey = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 

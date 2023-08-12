@@ -14,39 +14,39 @@ class FolderStep {
 
     companion object {
 
-        fun 폴더_생성_요청(deviceId: String, folderCreateRequest: FolderCreateRequest): ExtractableResponse<Response> =
+        fun 폴더_생성_요청(token: String, folderCreateRequest: FolderCreateRequest): ExtractableResponse<Response> =
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Device-Id", deviceId)
+                        .auth().oauth2(token)
                         .body(folderCreateRequest)
                         .`when`().post("/api/v1/folders")
                         .then().log().all()
                         .extract()
 
-        fun 폴더_조회_요청(deviceId: String): ExtractableResponse<Response> =
+        fun 폴더_조회_요청(token: String): ExtractableResponse<Response> =
                 RestAssured
                         .given().log().all()
-                        .header("Device-Id", deviceId)
+                        .auth().oauth2(token)
                         .`when`().get("/api/v1/folders")
                         .then().log().all()
                         .extract()
 
-        fun 폴더명_변경_요청(deviceId: String, folder_id: Long, folderUpdateRequest: FolderUpdateRequest): ExtractableResponse<Response> =
+        fun 폴더명_변경_요청(token: String, folder_id: Long, folderUpdateRequest: FolderUpdateRequest): ExtractableResponse<Response> =
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Device-Id", deviceId)
+                        .auth().oauth2(token)
                         .body(folderUpdateRequest)
                         .`when`().put("/api/v1/folders/{id}", folder_id)
                         .then().log().all()
                         .extract()
 
-        fun 폴더_삭제_요청(folder_id: Long) =
+        fun 폴더_삭제_요청(token: String, folder_id: Long) =
                 RestAssured
                         .given().log().all()
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Device-Id", "device_id")
+                        .auth().oauth2(token)
                         .`when`().delete("/api/v1/folders/{id}", folder_id)
                         .then().log().all()
                         .extract()

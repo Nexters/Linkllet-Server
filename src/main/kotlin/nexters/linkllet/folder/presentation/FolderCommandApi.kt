@@ -19,13 +19,13 @@ class FolderCommandApi(
 ) {
 
     @Operation(summary = "폴더 생성")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @PostMapping
     fun createFolder(
             @RequestBody request: FolderCreateRequest,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        folderService.createFolder(request.name, deviceId)
+        folderService.createFolder(request.name, email)
         return ResponseEntity.ok().build()
     }
 
@@ -35,44 +35,44 @@ class FolderCommandApi(
     fun updateFolder(
             @PathVariable id: Long,
             @RequestBody request: FolderUpdateRequest,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        folderService.updateFolderName(id, request.updateName, deviceId)
+        folderService.updateFolderName(id, request.updateName, email)
         return ResponseEntity.noContent().build()
     }
 
     @Operation(summary = "폴더 삭제")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @DeleteMapping("/{id}")
     fun deleteFolder(
             @PathVariable id: Long,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        folderService.deleteFolder(id, deviceId)
+        folderService.deleteFolder(id, email)
         return ResponseEntity.noContent().build()
     }
 
     @Operation(summary = "링크 생성")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @PostMapping("/{id}/articles")
     fun createArticle(
             @PathVariable id: Long,
             @RequestBody request: ArticleCreateRequest,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        folderService.addArticleAtFolder(id, request.name, request.url, deviceId)
+        folderService.addArticleAtFolder(id, request.name, request.url, email)
         return ResponseEntity.ok().build()
     }
 
     @Operation(summary = "링크 삭제")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @DeleteMapping("/{id}/articles/{articleId}")
     fun createArticle(
             @PathVariable id: Long,
             @PathVariable articleId: Long,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        folderService.deleteArticleAtFolder(id, articleId, deviceId)
+        folderService.deleteArticleAtFolder(id, articleId, email)
         return ResponseEntity.noContent().build()
     }
 }

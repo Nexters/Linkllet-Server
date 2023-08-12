@@ -37,7 +37,7 @@ class MemberCommandApi(
      * OAuth 최종 완료 되면 지울 것, 토큰 테스트용 API
      */
     @Operation(summary = "로그인")
-    @PostMapping
+    @PostMapping("/login")
     fun login(
             @RequestBody request: LoginRequest,
     ): ResponseEntity<LoginResponse> {
@@ -50,9 +50,9 @@ class MemberCommandApi(
     @PostMapping("/feedbacks")
     fun addFeedback(
             @RequestBody request: MemberFeedbackRequest,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<Unit> {
-        memberService.addFeedback(request.feedback, deviceId)
+        memberService.addFeedback(email, request.feedback)
         return ResponseEntity.ok().build()
     }
 }

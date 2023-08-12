@@ -18,23 +18,23 @@ class FolderQueryApi(
 ) {
 
     @Operation(summary = "폴더 목록 조회")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @GetMapping
     fun lookUpFolderList(
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<FolderLookupListResponse> {
-        val lookupDtoList = folderService.lookupFolderList(deviceId)
+        val lookupDtoList = folderService.lookupFolderList(email)
         return ResponseEntity.ok().body(lookupDtoList)
     }
 
     @Operation(summary = "기사 목록 조회")
-    @SecurityRequirement(name = "Device-Id")
+    @SecurityRequirement(name = "JWT")
     @GetMapping("/{id}/articles")
     fun lookUpArticleList(
             @PathVariable id: Long,
-            @LoginUserEmail deviceId: String,
+            @LoginUserEmail email: String,
     ): ResponseEntity<ArticleLookupListResponse> {
-        val lookupDtoList = folderService.lookupArticleList(id, deviceId)
+        val lookupDtoList = folderService.lookupArticleList(id, email)
         return ResponseEntity.ok().body(lookupDtoList)
     }
 }
