@@ -23,7 +23,7 @@ class FolderService(
     private val articleQueryRepository: ArticleQueryRepository,
 ) {
     companion object {
-        private const val SPACE_REGEX = "[\\s+]"
+        private val SPACE_REGEX = "\\s+".toRegex()
     }
 
     fun createFolder(folderName: String, deviceId: String) {

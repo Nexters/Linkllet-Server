@@ -177,14 +177,13 @@ class ArticleAcceptanceTest : AcceptanceTest() {
 
         val folderId = 폴더_조회_요청(deviceId).jsonPath().getLong("folderList[0].id")
 
-        아티클_생성_요청(deviceId, folderId, "article1")
-        아티클_생성_요청(deviceId, folderId, "article2")
-        아티클_생성_요청(deviceId, folderId, "article3")
-        아티클_생성_요청(deviceId, folderId, "other1")
-        아티클_생성_요청(deviceId, folderId, "other2")
+        아티클_생성_요청(deviceId, folderId, "게일")
+        아티클_생성_요청(deviceId, folderId, "케이가 좋아")
+        아티클_생성_요청(deviceId, folderId, "이케이")
+        아티클_생성_요청(deviceId, folderId, "케 이 요")
 
         // when
-        val 아티클_검색_응답 = 아티클_검색_요청(deviceId, "article")
+        val 아티클_검색_응답 = 아티클_검색_요청(deviceId, "케 이")
 
         // then
         아티클_검색_응답_확인(아티클_검색_응답, 3)
