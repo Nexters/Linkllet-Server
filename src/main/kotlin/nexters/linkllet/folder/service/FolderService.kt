@@ -1,6 +1,7 @@
 package nexters.linkllet.folder.service
 
 import nexters.linkllet.article.domain.Article
+import nexters.linkllet.article.domain.ArticleQueryRepository
 import nexters.linkllet.common.exception.dto.BadRequestException
 import nexters.linkllet.folder.domain.Folder
 import nexters.linkllet.folder.domain.FolderRepository
@@ -19,7 +20,11 @@ import org.springframework.transaction.annotation.Transactional
 class FolderService(
     private val folderRepository: FolderRepository,
     private val memberRepository: MemberRepository,
+    private val articleQueryRepository: ArticleQueryRepository,
 ) {
+    companion object {
+        private val SPACE_REGEX = "\\s+".toRegex()
+    }
 
     fun createFolder(folderName: String, deviceId: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
@@ -78,5 +83,19 @@ class FolderService(
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
         findFolder.deleteArticleById(articleId, findMember.getId)
+    }
+
+    @Transactional(readOnly = true)
+    fun searchArticlesByContent(content: String, deviceId: String): ArticleLookupListResponse {
+        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+
+        val searchResults = articleQueryRepository
+            .searchAllArticleByKeywords(splitBySpace(content), findMember.getId)
+
+        return ArticleLookupListResponse(searchResults)
+    }
+
+    private fun splitBySpace(content: String): List<String> {
+        return content.trim().split(SPACE_REGEX)
     }
 }

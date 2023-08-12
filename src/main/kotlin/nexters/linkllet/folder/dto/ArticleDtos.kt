@@ -1,6 +1,7 @@
 package nexters.linkllet.folder.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.querydsl.core.annotations.QueryProjection
 import nexters.linkllet.article.domain.Article
 import java.time.LocalDateTime
 
@@ -9,7 +10,7 @@ data class ArticleCreateRequest(
     val url: String,
 )
 
-data class ArticleLookupDto(
+data class ArticleLookupDto @QueryProjection constructor(
     val id: Long,
     val name: String,
     val url: String,
@@ -17,7 +18,8 @@ data class ArticleLookupDto(
     val createAt: LocalDateTime,
 ) {
     companion object {
-        fun of(article: Article): ArticleLookupDto = ArticleLookupDto(article.getId, article.getTitle, article.getLink, article.getCreatedDateTime!!)
+        fun of(article: Article): ArticleLookupDto =
+            ArticleLookupDto(article.getId, article.getTitle, article.getLink, article.getCreatedDateTime!!)
     }
 }
 

@@ -39,6 +39,9 @@ dependencies {
     // Swagger
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 
+    // DB
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
+
     // Test Container
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.testcontainers:testcontainers:1.17.6")
