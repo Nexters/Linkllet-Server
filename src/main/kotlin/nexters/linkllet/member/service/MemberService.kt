@@ -6,7 +6,7 @@ import nexters.linkllet.folder.domain.FolderRepository
 import nexters.linkllet.folder.domain.FolderType
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
-import nexters.linkllet.member.domain.findByDeviceIdOrThrow
+import nexters.linkllet.member.domain.findByEmailOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -15,34 +15,34 @@ private const val DEFAULT_FOLDER_NAME = "Default"
 @Transactional
 @Service
 class MemberService(
-    private val memberRepository: MemberRepository,
-    private val folderRepository: FolderRepository,
+        private val memberRepository: MemberRepository,
+        private val folderRepository: FolderRepository,
 ) {
 
-    fun signUp(deviceId: String) {
-        memberRepository.findByDeviceId(deviceId)
-            ?.let { throw ConflictException() }
+    fun signUp(email: String) {
+        memberRepository.findByEmail(email)
+                ?.let { throw ConflictException() }
 
-        initMember(deviceId)
+        initMember(email)
     }
 
-    fun addFeedback(feedback: String, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
-        findMember.addFeedback(feedback)
-    }
-
-    private fun initMember(deviceId: String) {
-        val newMember = memberRepository.save(Member(deviceId))
+    private fun initMember(email: String) {
+        val newMember = memberRepository.save(Member(email = email))
         createStartFolder(newMember)
+    }
+
+    fun addFeedback(email: String, feedback: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
+        findMember.addFeedback(feedback)
     }
 
     private fun createStartFolder(newMember: Member) {
         folderRepository.saveAll(
-            listOf(
-                Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT),
-                Folder("Folder 1", newMember.getId, FolderType.PERSONALIZED),
-                Folder("Folder 2", newMember.getId, FolderType.PERSONALIZED)
-            )
+                listOf(
+                        Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT),
+                        Folder("Folder 1", newMember.getId, FolderType.PERSONALIZED),
+                        Folder("Folder 2", newMember.getId, FolderType.PERSONALIZED)
+                )
         )
     }
 }

@@ -24,7 +24,7 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        val newMember = memberRepository.save(Member("device_id"))
+        val newMember = memberRepository.save(Member(email = "kth990303@naver.com"))
         folderRepository.save(Folder(DEFAULT_FOLDER_NAME, newMember.getId, FolderType.DEFAULT))
 
         log.info("[init complete DataLoader]")

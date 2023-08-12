@@ -20,5 +20,5 @@ class ForbiddenException(message: String = "권한이 존재하지 않습니다.
 class NotFoundException(message: String = "존재하지 않는 요청입니다.")
     : LinklletException(message, HttpStatus.NOT_FOUND.value())
 
-class ConflictException(message: String = "이미 등록된 디바이스 입니다.")
+class ConflictException(message: String = "이미 등록된 이메일입니다.")
     : LinklletException(message, HttpStatus.CONFLICT.value())

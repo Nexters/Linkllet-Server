@@ -3,7 +3,7 @@ package nexters.linkllet.folder.presentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import nexters.linkllet.common.support.AccessDeviceId
+import nexters.linkllet.common.support.LoginUserEmail
 import nexters.linkllet.folder.dto.ArticleCreateRequest
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.folder.dto.FolderUpdateRequest
@@ -23,7 +23,7 @@ class FolderCommandApi(
     @PostMapping
     fun createFolder(
             @RequestBody request: FolderCreateRequest,
-            @AccessDeviceId deviceId: String,
+            @LoginUserEmail deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.createFolder(request.name, deviceId)
         return ResponseEntity.ok().build()
@@ -35,7 +35,7 @@ class FolderCommandApi(
     fun updateFolder(
             @PathVariable id: Long,
             @RequestBody request: FolderUpdateRequest,
-            @AccessDeviceId deviceId: String,
+            @LoginUserEmail deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.updateFolderName(id, request.updateName, deviceId)
         return ResponseEntity.noContent().build()
@@ -46,7 +46,7 @@ class FolderCommandApi(
     @DeleteMapping("/{id}")
     fun deleteFolder(
             @PathVariable id: Long,
-            @AccessDeviceId deviceId: String,
+            @LoginUserEmail deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.deleteFolder(id, deviceId)
         return ResponseEntity.noContent().build()
@@ -58,7 +58,7 @@ class FolderCommandApi(
     fun createArticle(
             @PathVariable id: Long,
             @RequestBody request: ArticleCreateRequest,
-            @AccessDeviceId deviceId: String,
+            @LoginUserEmail deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.addArticleAtFolder(id, request.name, request.url, deviceId)
         return ResponseEntity.ok().build()
@@ -70,7 +70,7 @@ class FolderCommandApi(
     fun createArticle(
             @PathVariable id: Long,
             @PathVariable articleId: Long,
-            @AccessDeviceId deviceId: String,
+            @LoginUserEmail deviceId: String,
     ): ResponseEntity<Unit> {
         folderService.deleteArticleAtFolder(id, articleId, deviceId)
         return ResponseEntity.noContent().build()
