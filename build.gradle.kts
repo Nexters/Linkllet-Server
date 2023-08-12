@@ -39,6 +39,11 @@ dependencies {
     // Swagger
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 
+    // JWT
+    compileOnly("io.jsonwebtoken:jjwt-api:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
     // Test Container
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.testcontainers:testcontainers:1.17.6")

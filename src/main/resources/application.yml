@@ -13,6 +13,10 @@ spring:
     username: ${DB_USER}
     url: ${DB_URL}
 
+security.jwt.token:
+  secret-key: ${TOKEN_SECRET_KEY}
+  expire-length: ${TOKEN_EXPIRE_LENGTH}
+
 springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
