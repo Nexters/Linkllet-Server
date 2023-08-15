@@ -44,6 +44,10 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
+    // Feign
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
     // DB
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 
