@@ -27,11 +27,17 @@ class JwtProvider(
 
     fun getPayload(token: String): String {
         try {
-            return Jwts.parser().parseClaimsJws(token).body.subject
+            return extractPayload(token)
         } catch (e: JwtException) {
             throw UnauthorizedException()
         } catch (e: IllegalArgumentException) {
             throw UnauthorizedException()
         }
     }
+
+    private fun extractPayload(token: String) = Jwts.parser()
+            .setSigningKey(jwtConfigProperties.secretKey)
+            .parseClaimsJws(token)
+            .body
+            .subject
 }
