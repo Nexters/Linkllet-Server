@@ -11,23 +11,23 @@ import nexters.linkllet.folder.dto.ArticleLookupListResponse
 import nexters.linkllet.folder.dto.FolderLookupListResponse
 import nexters.linkllet.member.domain.Member
 import nexters.linkllet.member.domain.MemberRepository
-import nexters.linkllet.member.domain.findByDeviceIdOrThrow
+import nexters.linkllet.member.domain.findByEmailOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
 class FolderService(
-    private val folderRepository: FolderRepository,
-    private val memberRepository: MemberRepository,
-    private val articleQueryRepository: ArticleQueryRepository,
+        private val folderRepository: FolderRepository,
+        private val memberRepository: MemberRepository,
+        private val articleQueryRepository: ArticleQueryRepository,
 ) {
     companion object {
         private val SPACE_REGEX = "\\s+".toRegex()
     }
 
-    fun createFolder(folderName: String, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun createFolder(folderName: String, email: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
 
         validateDuplicateFolderName(findMember, folderName)
 
@@ -35,15 +35,15 @@ class FolderService(
     }
 
     @Transactional(readOnly = true)
-    fun lookupFolderList(deviceId: String): FolderLookupListResponse {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun lookupFolderList(email: String): FolderLookupListResponse {
+        val findMember = memberRepository.findByEmailOrThrow(email)
 
         return folderRepository.lookupFolderDtosByMemberId(findMember.getId)
-            .let(::FolderLookupListResponse)
+                .let(::FolderLookupListResponse)
     }
 
-    fun updateFolderName(folderId: Long, updateName: String, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun updateFolderName(folderId: Long, updateName: String, email: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
         validateDuplicateFolderName(findMember, updateName)
 
         val findFolder = folderRepository.findByIdOrThrow(folderId)
@@ -57,40 +57,40 @@ class FolderService(
     }
 
 
-    fun deleteFolder(folderId: Long, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun deleteFolder(folderId: Long, email: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
 
         folderRepository.deleteByMemberIdAndId(findMember.getId, folderId)
     }
 
-    fun addArticleAtFolder(folderId: Long, name: String, url: String, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun addArticleAtFolder(folderId: Long, name: String, url: String, email: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
         findFolder.addArticle(Article(url, name, findMember.getId, findFolder))
     }
 
     @Transactional(readOnly = true)
-    fun lookupArticleList(folderId: Long, deviceId: String): ArticleLookupListResponse {
+    fun lookupArticleList(folderId: Long, email: String): ArticleLookupListResponse {
         return folderRepository.findByIdOrThrow(folderId)
-            .getArticles()
-            .map { ArticleLookupDto.of(it) }
-            .let(::ArticleLookupListResponse)
+                .getArticles()
+                .map { ArticleLookupDto.of(it) }
+                .let(::ArticleLookupListResponse)
     }
 
-    fun deleteArticleAtFolder(folderId: Long, articleId: Long, deviceId: String) {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun deleteArticleAtFolder(folderId: Long, articleId: Long, email: String) {
+        val findMember = memberRepository.findByEmailOrThrow(email)
         val findFolder = folderRepository.findByIdOrThrow(folderId)
 
         findFolder.deleteArticleById(articleId, findMember.getId)
     }
 
     @Transactional(readOnly = true)
-    fun searchArticlesByContent(content: String, deviceId: String): ArticleLookupListResponse {
-        val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
+    fun searchArticlesByContent(content: String, email: String): ArticleLookupListResponse {
+        val findMember = memberRepository.findByEmailOrThrow(email)
 
         val searchResults = articleQueryRepository
-            .searchAllArticleByKeywords(splitBySpace(content), findMember.getId)
+                .searchAllArticleByKeywords(splitBySpace(content), findMember.getId)
 
         return ArticleLookupListResponse(searchResults)
     }

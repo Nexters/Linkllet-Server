@@ -3,6 +3,7 @@ package nexters.linkllet.acceptance
 import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
 import nexters.linkllet.acceptance.MemberStep.Companion.피드백_요청
 import nexters.linkllet.acceptance.MemberStep.Companion.회원_가입_요청
+import nexters.linkllet.member.dto.LoginRequest
 import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
@@ -15,7 +16,7 @@ class MemberAcceptanceTest : AcceptanceTest() {
 
     @Test
     fun `회원 가입`() {
-        val 회원_가입_정보 = MemberSignUpRequest("kth990303")
+        val 회원_가입_정보 = MemberSignUpRequest("shine@naver.com")
 
         val 회원_가입_응답 = 회원_가입_요청(회원_가입_정보)
 
@@ -23,34 +24,35 @@ class MemberAcceptanceTest : AcceptanceTest() {
     }
 
     /**
-     * given: 회원 가입된 사용자 shine이 존재한다.
-     * when: 동일한 device id인 shine으로 가입을 요청한다
+     * given: 회원 가입된 사용자 kth990303이 존재한다.
+     * when: 동일한 device id인 kth990303으로 가입을 요청한다
      * then: Conflict 상태코드를 응답한다
      */
     @Test
     fun `중복 회원 가입`() {
         // given
-        회원_가입_요청(MemberSignUpRequest("shine"))
+        회원_가입_요청(MemberSignUpRequest("kth990303@naver.com"))
 
         // when
-        val 회원_가입_응답 = 회원_가입_요청(MemberSignUpRequest("shine"))
+        val 회원_가입_응답 = 회원_가입_요청(MemberSignUpRequest("kth990303@naver.com"))
 
         // then
         응답_확인(회원_가입_응답, HttpStatus.CONFLICT)
     }
 
     /**
-     * given: 회원 가입된 사용자 shine이 존재한다.
+     * given: 회원 가입된 사용자 kth990303이 존재한다.
      * when: 해당 회원이 피드백을 남긴다
      * then: OK 상태코드를 응답한다
      */
     @Test
     fun `회원 피드백 남기기`() {
         // given
-        회원_가입_요청(MemberSignUpRequest("shine"))
+        회원_가입_요청(MemberSignUpRequest("kth990303@naver.com"))
+        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
 
         // when
-        val 피드백_요청_응답 = 피드백_요청("shine", "feedback")
+        val 피드백_요청_응답 = 피드백_요청(token, "feedback")
 
         // then
         응답_확인(피드백_요청_응답, HttpStatus.OK)

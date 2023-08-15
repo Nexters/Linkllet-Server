@@ -7,9 +7,11 @@ import nexters.linkllet.acceptance.FolderStep.Companion.폴더_생성_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더명_변경_요청
+import nexters.linkllet.acceptance.MemberStep.Companion.로그인
 import nexters.linkllet.acceptance.MemberStep.Companion.회원_가입_요청
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.folder.dto.FolderUpdateRequest
+import nexters.linkllet.member.dto.LoginRequest
 import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
 import org.assertj.core.api.Assertions.*
@@ -28,10 +30,11 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더 생성`() {
         // given
+        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
         val 폴더_생성_정보 = FolderCreateRequest("folder")
 
         // when
-        val 폴더_생성_요청_응답 = 폴더_생성_요청("device_id", 폴더_생성_정보)
+        val 폴더_생성_요청_응답 = 폴더_생성_요청(token, 폴더_생성_정보)
 
         // then
         응답_확인(폴더_생성_요청_응답, HttpStatus.OK)
@@ -45,10 +48,11 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더명 10자 초과 생성`() {
         // given
+        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
         val 폴더_생성_정보 = FolderCreateRequest("folder_name")
 
         // when
-        val 폴더_생성_요청_응답 = 폴더_생성_요청("device_id", 폴더_생성_정보)
+        val 폴더_생성_요청_응답 = 폴더_생성_요청(token, 폴더_생성_정보)
 
         // then
         응답_확인(폴더_생성_요청_응답, HttpStatus.BAD_REQUEST)
@@ -63,10 +67,11 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더 중복 이름 생성`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
+        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
+        폴더_생성_요청(token, FolderCreateRequest("folder"))
 
         // when
-        val 폴더_생성_요청_응답 = 폴더_생성_요청("device_id", FolderCreateRequest("folder_name"))
+        val 폴더_생성_요청_응답 = 폴더_생성_요청(token, FolderCreateRequest("folder_name"))
 
         // then
         응답_확인(폴더_생성_요청_응답, HttpStatus.BAD_REQUEST)
@@ -82,19 +87,20 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더 목록 조회`() {
         // given
-        val deviceId = "shine"
-        회원_가입_요청(MemberSignUpRequest(deviceId))
+        val email = "shine@naver.com"
+        회원_가입_요청(MemberSignUpRequest(email))
+        val token = 로그인(LoginRequest(email))
 
-        val 폴더_조회_응답 = 폴더_조회_요청(deviceId)
+        val 폴더_조회_응답 = 폴더_조회_요청(token)
         val folderIdOne = 폴더_조회_응답.jsonPath().getLong("folderList[0].id")
         val folderIdTwo = 폴더_조회_응답.jsonPath().getLong("folderList[1].id")
-        아티클_생성_요청(deviceId, folderIdOne, "article_1")
-        아티클_생성_요청(deviceId, folderIdOne, "article_2")
-        아티클_생성_요청(deviceId, folderIdTwo, "article_1")
-        아티클_생성_요청(deviceId, folderIdTwo, "article_2")
+        아티클_생성_요청(token, folderIdOne, "article_1")
+        아티클_생성_요청(token, folderIdOne, "article_2")
+        아티클_생성_요청(token, folderIdTwo, "article_1")
+        아티클_생성_요청(token, folderIdTwo, "article_2")
 
         // when
-        val 폴더_조회_요청_응답 = 폴더_조회_요청(deviceId)
+        val 폴더_조회_요청_응답 = 폴더_조회_요청(token)
 
         // then
         폴더_조회_응답_확인(폴더_조회_요청_응답, HttpStatus.OK, 3) // 기본폴더 1개 추가해서 총 4개여야 한다
@@ -109,12 +115,13 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더명 변경`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
+        폴더_생성_요청(token, FolderCreateRequest("folder"))
 
-        val folder_id = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
+        val folder_id = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
         // when
-        val 폴더명_변경_요청_응답 = 폴더명_변경_요청("device_id", folder_id, FolderUpdateRequest("new_folder"))
+        val 폴더명_변경_요청_응답 = 폴더명_변경_요청(token, folder_id, FolderUpdateRequest("new_folder"))
 
         // then
         응답_확인(폴더명_변경_요청_응답, HttpStatus.NO_CONTENT)
@@ -130,15 +137,16 @@ class FolderAcceptanceTest : AcceptanceTest() {
     @Test
     fun `폴더 삭제`() {
         // given
-        폴더_생성_요청("device_id", FolderCreateRequest("folder"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
+        폴더_생성_요청(token, FolderCreateRequest("folder"))
 
-        val folder_id = 폴더_조회_요청("device_id").jsonPath().getLong("folderList[0].id")
+        val folder_id = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
         // when
-        val 폴더_삭제_응답 = 폴더_삭제_요청(folder_id)
+        val 폴더_삭제_응답 = 폴더_삭제_요청(token, folder_id)
         응답_확인(폴더_삭제_응답, HttpStatus.NO_CONTENT)
 
         // then
-        폴더_조회_응답_확인(폴더_조회_요청("device_id"), HttpStatus.OK, 1)
+        폴더_조회_응답_확인(폴더_조회_요청(token), HttpStatus.OK, 1)
     }
 }

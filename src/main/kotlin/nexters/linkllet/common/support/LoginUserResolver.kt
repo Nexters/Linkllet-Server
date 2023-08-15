@@ -1,5 +1,6 @@
 package nexters.linkllet.common.support
 
+import javax.servlet.http.HttpServletRequest
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -8,10 +9,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 
 @Component
-class DeviceUserResolver : HandlerMethodArgumentResolver {
+class LoginUserResolver(
+        private val jwtProvider: JwtProvider,
+) : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.hasParameterAnnotation(AccessDeviceId::class.java)
+        return parameter.hasParameterAnnotation(LoginUserEmail::class.java)
     }
 
     override fun resolveArgument(
@@ -20,6 +23,8 @@ class DeviceUserResolver : HandlerMethodArgumentResolver {
             webRequest: NativeWebRequest,
             binderFactory: WebDataBinderFactory?,
     ): String {
-        return DeviceHeaderExtractor.extractDeviceId(webRequest)
+        val request = webRequest.nativeRequest as HttpServletRequest
+        val token = AuthorizationExtractor.extractToken(request)
+        return jwtProvider.getPayload(token)
     }
 }

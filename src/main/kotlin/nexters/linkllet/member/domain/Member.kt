@@ -13,8 +13,14 @@ import javax.persistence.Table
 @Table(name = "member")
 class Member(
 
-    @Column(name = "device_id", nullable = false)
-    private val deviceId: String,
+    /*
+     * OAuth 최종 완료 후, deviceId 요청이 없다고 판단되면 삭제할 것
+     */
+    @Column(name = "device_id")
+    private val deviceId: String? = null,
+
+    @Column(name = "email", length = 100, nullable = false)
+    private val email: String,
 
     @Id
     @Column(name = "member_id")

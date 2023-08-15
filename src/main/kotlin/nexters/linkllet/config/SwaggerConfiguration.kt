@@ -7,8 +7,7 @@ import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-
-private const val DEVICE_ID_HEADER = "Device-Id"
+import org.springframework.http.HttpHeaders
 
 @Configuration
 class SwaggerConfiguration {
@@ -22,12 +21,14 @@ class SwaggerConfiguration {
                 .contact(Contact().name("springdoc 공식문서").url("https://springdoc.org/"))
 
         val deviceHeader = SecurityScheme()
-                .type(SecurityScheme.Type.APIKEY)
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
                 .`in`(SecurityScheme.In.HEADER)
-                .name(DEVICE_ID_HEADER)
+                .name(HttpHeaders.AUTHORIZATION)
 
         return OpenAPI()
-                .components(Components().addSecuritySchemes(DEVICE_ID_HEADER, deviceHeader))
+                .components(Components().addSecuritySchemes("JWT", deviceHeader))
                 .info(info)
     }
 }
