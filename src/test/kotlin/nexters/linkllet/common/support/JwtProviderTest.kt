@@ -1,6 +1,7 @@
 package nexters.linkllet.common.support
 
 import nexters.linkllet.common.exception.dto.UnauthorizedException
+import nexters.linkllet.config.JwtConfigProperties
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -14,7 +15,8 @@ class JwtProviderTest {
     @DisplayName("토큰을 성공적으로 발급하고 payload 추출한다")
     fun getPayloadByValidToken() {
         // given
-        val tokenProvider = JwtProvider(VALID_SECRET_KEY, EXPIRATION_TIME)
+        val jwtConfigProperties = JwtConfigProperties(VALID_SECRET_KEY, EXPIRATION_TIME)
+        val tokenProvider = JwtProvider(jwtConfigProperties)
         val expected = "kth990303@naver.com"
         val token = tokenProvider.generateToken(expected)
 
@@ -29,7 +31,8 @@ class JwtProviderTest {
     @DisplayName("잘못된 키로 토큰을 발급할 경우 payload 추출 시 예외를 반환한다")
     fun getPayloadByInvalidToken() {
         // given
-        val invalidProvider = JwtProvider(INVALID_SECRET_KEY, EXPIRATION_TIME)
+        val jwtConfigProperties = JwtConfigProperties(INVALID_SECRET_KEY, EXPIRATION_TIME)
+        val invalidProvider = JwtProvider(jwtConfigProperties)
 
         // when
         // then
@@ -40,7 +43,8 @@ class JwtProviderTest {
     @DisplayName("만료된 토큰에서 payload 추출 시 예외를 반환한다")
     fun getPayloadByExpiredToken() {
         // given
-        val expiredTokenProvider = JwtProvider(VALID_SECRET_KEY, -1)
+        val jwtConfigProperties = JwtConfigProperties(VALID_SECRET_KEY, -1)
+        val expiredTokenProvider = JwtProvider(jwtConfigProperties)
 
         // when
         // then

@@ -8,15 +8,15 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.crypto.SecretKey
 import nexters.linkllet.common.exception.dto.UnauthorizedException
-import org.springframework.beans.factory.annotation.Value
+import nexters.linkllet.config.JwtConfigProperties
 import org.springframework.stereotype.Component
 
 @Component
 class JwtProvider(
-        @Value("\${security.jwt.token.secret-key}") val secretKey: String,
-        @Value("\${security.jwt.token.expire-length}") val expirationTime: Long,
+        private val jwtConfigProperties: JwtConfigProperties,
 ) {
-    private val signingKey: SecretKey = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+    private val signingKey: SecretKey = Keys.hmacShaKeyFor(jwtConfigProperties.secretKey.toByteArray(StandardCharsets.UTF_8))
 
     fun generateToken(payload: String): String {
         val claims: Claims = Jwts.claims().setSubject(payload)
@@ -24,7 +24,7 @@ class JwtProvider(
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(Date(now.time + expirationTime))
+                .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
                 .signWith(signingKey)
                 .compact()
     }
