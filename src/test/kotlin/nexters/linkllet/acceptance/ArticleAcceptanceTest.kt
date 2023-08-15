@@ -1,5 +1,7 @@
 package nexters.linkllet.acceptance
 
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_검색_요청
+import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_검색_응답_확인
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_삭제_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_생성_요청
 import nexters.linkllet.acceptance.ArticleStep.Companion.아티클_조회_응답_확인
@@ -7,11 +9,12 @@ import nexters.linkllet.acceptance.ArticleStep.Companion.폴더의_모든_아티
 import nexters.linkllet.acceptance.CommonStep.Companion.응답_확인
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_생성_요청
 import nexters.linkllet.acceptance.FolderStep.Companion.폴더_조회_요청
+import nexters.linkllet.acceptance.MemberStep.Companion.로그인
+import nexters.linkllet.acceptance.MemberStep.Companion.회원_가입_요청
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.member.dto.LoginRequest
 import nexters.linkllet.member.dto.MemberSignUpRequest
 import nexters.linkllet.util.AcceptanceTest
-import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -29,7 +32,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더에 링크 저장하기`() {
         // given
-        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
         폴더_생성_요청(token, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
@@ -50,7 +53,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더에 링크 저장할 때 제목 10자 초과 시 예외 반환`() {
         // given
-        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
         폴더_생성_요청(token, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
@@ -70,9 +73,9 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `본인 폴더가 아닌 폴더에 링크 저장 시 예외 반환`() {
         // given
-        MemberStep.회원_가입_요청(MemberSignUpRequest("shine@naver.com"))
-        val token1 = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
-        val token2 = MemberStep.로그인(LoginRequest("shine@naver.com"))
+        회원_가입_요청(MemberSignUpRequest("shine@naver.com"))
+        val token1 = 로그인(LoginRequest("kth990303@naver.com"))
+        val token2 = 로그인(LoginRequest("shine@naver.com"))
 
         폴더_생성_요청(token1, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(token1).jsonPath().getLong("folderList[0].id")
@@ -94,7 +97,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더에 모든 링크 조회하기`() {
         // given
-        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
         폴더_생성_요청(token, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
@@ -121,7 +124,7 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `사용자 폴더의 특정 링크 삭제하기`() {
         // given
-        val token = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
+        val token = 로그인(LoginRequest("kth990303@naver.com"))
         폴더_생성_요청(token, FolderCreateRequest("folder"))
         val folderId = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
 
@@ -149,9 +152,9 @@ class ArticleAcceptanceTest : AcceptanceTest() {
     @Test
     fun `본인 폴더가 아닌 폴더에 링크 삭제 시 예외 반환`() {
         // given
-        MemberStep.회원_가입_요청(MemberSignUpRequest("shine@naver.com"))
-        val token1 = MemberStep.로그인(LoginRequest("kth990303@naver.com"))
-        val token2 = MemberStep.로그인(LoginRequest("shine@naver.com"))
+        회원_가입_요청(MemberSignUpRequest("shine@naver.com"))
+        val token1 = 로그인(LoginRequest("kth990303@naver.com"))
+        val token2 = 로그인(LoginRequest("shine@naver.com"))
 
         폴더_생성_요청(token2, FolderCreateRequest("folder"))
 
@@ -164,6 +167,35 @@ class ArticleAcceptanceTest : AcceptanceTest() {
         val actual = 아티클_삭제_요청(token1, folderId, firstArticleId)
 
         // then
-        Assertions.assertThat(actual.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value())
+        응답_확인(actual, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * given: 회원 가입된 사용자가 존재한다.
+     * And: 특정 사용자가 폴더를 생성하고 링크를 저장한다
+     * when: 해당 사용자가 링크 검색을 요청한다
+     * then: 검색조건에 부한한 링크 목록이 반환된다.
+     */
+    @Test
+    fun `아티클 검색`() {
+        // given
+        val email = "shine@naver.com"
+        회원_가입_요청(MemberSignUpRequest(email))
+        val token = 로그인(LoginRequest("shine@naver.com"))
+
+        폴더_생성_요청(token, FolderCreateRequest("folder"))
+
+        val folderId = 폴더_조회_요청(token).jsonPath().getLong("folderList[0].id")
+
+        아티클_생성_요청(token, folderId, "게일")
+        아티클_생성_요청(token, folderId, "케이가 좋아")
+        아티클_생성_요청(token, folderId, "이케이")
+        아티클_생성_요청(token, folderId, "케 이 요")
+
+        // when
+        val 아티클_검색_응답 = 아티클_검색_요청(token, "케 이")
+
+        // then
+        아티클_검색_응답_확인(아티클_검색_응답, 3)
     }
 }

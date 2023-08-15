@@ -48,5 +48,21 @@ class ArticleStep {
                     { Assertions.assertThat(response.jsonPath().getList<Any>("articleList").size).isEqualTo(count) }
             )
         }
+
+        fun 아티클_검색_요청(token: String, content: String): ExtractableResponse<Response> =
+                RestAssured
+                        .given().log().all()
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .auth().oauth2(token)
+                        .`when`().get("/api/v1/folders/search?content={content}", content)
+                        .then().log().all()
+                        .extract()
+
+        fun 아티클_검색_응답_확인(response: ExtractableResponse<Response>, cnt: Int) {
+            assertAll(
+                    { Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                    { Assertions.assertThat(response.jsonPath().getList<Any>("articleList").size).isEqualTo(cnt) }
+            )
+        }
     }
 }

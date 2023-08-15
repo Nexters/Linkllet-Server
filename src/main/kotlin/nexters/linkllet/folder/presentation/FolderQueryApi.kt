@@ -37,4 +37,15 @@ class FolderQueryApi(
         val lookupDtoList = folderService.lookupArticleList(id, email)
         return ResponseEntity.ok().body(lookupDtoList)
     }
+
+    @Operation(summary = "링크 검색")
+    @SecurityRequirement(name = "Device-Id")
+    @GetMapping("/search")
+    fun searchArticles(
+        @RequestParam content: String,
+        @LoginUserEmail email: String,
+    ): ResponseEntity<ArticleLookupListResponse> {
+        val lookupDtoList = folderService.searchArticlesByContent(content, email)
+        return ResponseEntity.ok().body(lookupDtoList)
+    }
 }
