@@ -3,26 +3,30 @@ package nexters.linkllet.common.support
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
+import java.nio.charset.StandardCharsets
 import java.util.*
+import javax.crypto.SecretKey
 import nexters.linkllet.common.exception.dto.UnauthorizedException
 import nexters.linkllet.config.JwtConfigProperties
 import org.springframework.stereotype.Component
 
 @Component
 class JwtProvider(
-        private val jwtConfigProperties: JwtConfigProperties,
+    private val jwtConfigProperties: JwtConfigProperties,
 ) {
+    private val signingKey: SecretKey =
+        Keys.hmacShaKeyFor(jwtConfigProperties.secretKey.toByteArray(StandardCharsets.UTF_8))
 
     fun generateToken(payload: String): String {
         val claims: Claims = Jwts.claims().setSubject(payload)
         val now = Date()
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
-                .signWith(SignatureAlgorithm.HS256, jwtConfigProperties.secretKey)
-                .compact()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
+            .signWith(signingKey)
+            .compact()
     }
 
     fun getPayload(token: String): String {
@@ -35,9 +39,10 @@ class JwtProvider(
         }
     }
 
-    private fun extractPayload(token: String) = Jwts.parser()
-            .setSigningKey(jwtConfigProperties.secretKey)
-            .parseClaimsJws(token)
-            .body
-            .subject
+    private fun extractPayload(token: String) = Jwts.parserBuilder()
+        .setSigningKey(signingKey.encoded)
+        .build()
+        .parseClaimsJws(token)
+        .body
+        .subject
 }

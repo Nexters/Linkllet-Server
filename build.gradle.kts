@@ -40,7 +40,9 @@ dependencies {
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 
     // JWT
-    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
     // Feign
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))

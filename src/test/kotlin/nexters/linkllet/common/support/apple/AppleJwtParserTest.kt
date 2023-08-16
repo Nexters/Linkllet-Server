@@ -21,14 +21,14 @@ class AppleJwtParserTest {
         val privateKey = keyPair.private
 
         val idToken = Jwts.builder()
-                .setHeaderParam("kid", "W2R4HXF3K")
-                .claim("id", "12345678")
-                .setIssuer("iss")
-                .setIssuedAt(now)
-                .setAudience("aud")
-                .setExpiration(Date(now.time + 1000 * 60 * 60 * 24))
-                .signWith(SignatureAlgorithm.RS256, privateKey)
-                .compact()
+            .setHeaderParam("kid", "W2R4HXF3K")
+            .claim("id", "12345678")
+            .setIssuer("iss")
+            .setIssuedAt(now)
+            .setAudience("aud")
+            .setExpiration(Date(now.time + 1000 * 60 * 60 * 24))
+            .signWith(privateKey, SignatureAlgorithm.RS256)
+            .compact()
 
         // when
         val actual = appleJwtParser.parseHeaders(idToken)
@@ -52,15 +52,15 @@ class AppleJwtParserTest {
         val privateKey = keyPair.private
 
         val idToken = Jwts.builder()
-                .setHeaderParam("kid", "W2R4HXF3K")
-                .claim("id", "12345678")
-                .setIssuer("iss")
-                .setIssuedAt(now)
-                .setAudience("aud")
-                .setSubject(expected)
-                .setExpiration(Date(now.time + 1000 * 60 * 60 * 24))
-                .signWith(SignatureAlgorithm.RS256, privateKey)
-                .compact()
+            .setHeaderParam("kid", "W2R4HXF3K")
+            .claim("id", "12345678")
+            .setIssuer("iss")
+            .setIssuedAt(now)
+            .setAudience("aud")
+            .setSubject(expected)
+            .setExpiration(Date(now.time + 1000 * 60 * 60 * 24))
+            .signWith(privateKey, SignatureAlgorithm.RS256)
+            .compact()
 
         // when
         val claims = appleJwtParser.parsePublicKeyAndGetClaims(idToken, publicKey)
@@ -78,15 +78,15 @@ class AppleJwtParserTest {
         val privateKey = keyPair.private
 
         val expiredIdToken = Jwts.builder()
-                .setHeaderParam("kid", "W2R4HXF3K")
-                .claim("id", "12345678")
-                .setIssuer("iss")
-                .setIssuedAt(now)
-                .setAudience("aud")
-                .setSubject("11111111")
-                .setExpiration(Date(now.time - 1))
-                .signWith(SignatureAlgorithm.RS256, privateKey)
-                .compact()
+            .setHeaderParam("kid", "W2R4HXF3K")
+            .claim("id", "12345678")
+            .setIssuer("iss")
+            .setIssuedAt(now)
+            .setAudience("aud")
+            .setSubject("11111111")
+            .setExpiration(Date(now.time - 1))
+            .signWith(privateKey, SignatureAlgorithm.RS256)
+            .compact()
 
         // when
         // then
@@ -102,15 +102,15 @@ class AppleJwtParserTest {
         val diffPublicKey = KeyPairGenerator.getInstance("RSA").genKeyPair().public
 
         val expiredIdToken = Jwts.builder()
-                .setHeaderParam("kid", "W2R4HXF3K")
-                .claim("id", "12345678")
-                .setIssuer("iss")
-                .setIssuedAt(now)
-                .setAudience("aud")
-                .setSubject("11111111")
-                .setExpiration(Date(now.time - 1))
-                .signWith(SignatureAlgorithm.RS256, privateKey)
-                .compact()
+            .setHeaderParam("kid", "W2R4HXF3K")
+            .claim("id", "12345678")
+            .setIssuer("iss")
+            .setIssuedAt(now)
+            .setAudience("aud")
+            .setSubject("11111111")
+            .setExpiration(Date(now.time - 1))
+            .signWith(privateKey, SignatureAlgorithm.RS256)
+            .compact()
 
         // when
         // then
