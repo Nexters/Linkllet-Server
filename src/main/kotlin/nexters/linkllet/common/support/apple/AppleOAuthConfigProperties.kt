@@ -1,4 +1,4 @@
-package nexters.linkllet.config
+package nexters.linkllet.common.support.apple
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
