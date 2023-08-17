@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import nexters.linkllet.config.AppleOAuthConfigProperties
 import org.springframework.stereotype.Component
 
 @Component

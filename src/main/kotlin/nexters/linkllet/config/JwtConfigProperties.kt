@@ -1,9 +1,11 @@
 package nexters.linkllet.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.ConstructorBinding
 
+@ConstructorBinding
 @ConfigurationProperties(prefix = "security.jwt.token")
 data class JwtConfigProperties(
-        var secretKey: String = "",
-        var expirationTime: Long = 18000000L,
+        val secretKey: String,
+        val expirationTime: Long = 18000000L,
 )

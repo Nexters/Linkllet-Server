@@ -36,6 +36,9 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // config processor
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     // Swagger
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 

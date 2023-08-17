@@ -1,7 +1,6 @@
 package nexters.linkllet.common.support.apple
 
 import io.jsonwebtoken.Jwts
-import nexters.linkllet.config.AppleOAuthConfigProperties
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
