@@ -40,9 +40,13 @@ dependencies {
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 
     // JWT
-    compileOnly("io.jsonwebtoken:jjwt-api:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
+    // Feign
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // DB
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")

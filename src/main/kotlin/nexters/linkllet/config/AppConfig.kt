@@ -12,4 +12,9 @@ class AppConfig {
     fun jwtConfigProperties(): JwtConfigProperties {
         return JwtConfigProperties()
     }
+
+    @Bean
+    fun appleOAuthConfigProperties(): AppleOAuthConfigProperties {
+        return AppleOAuthConfigProperties()
+    }
 }

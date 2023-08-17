@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import nexters.linkllet.common.support.LoginUserEmail
+import nexters.linkllet.member.dto.AppleLoginRequest
+import nexters.linkllet.member.dto.AppleLoginResponse
 import nexters.linkllet.member.dto.LoginRequest
 import nexters.linkllet.member.dto.LoginResponse
 import nexters.linkllet.member.dto.MemberFeedbackRequest
@@ -20,14 +22,14 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/members")
 class MemberCommandApi(
-    private val memberService: MemberService,
-    private val authService: AuthService,
+        private val memberService: MemberService,
+        private val authService: AuthService,
 ) {
 
     @Operation(summary = "회원가입")
     @PostMapping
     fun signUp(
-        @RequestBody request: MemberSignUpRequest,
+            @RequestBody request: MemberSignUpRequest,
     ): ResponseEntity<Unit> {
         memberService.signUp(request.email)
         return ResponseEntity.ok().build()
@@ -42,6 +44,15 @@ class MemberCommandApi(
             @RequestBody request: LoginRequest,
     ): ResponseEntity<LoginResponse> {
         val response = authService.login(request)
+        return ResponseEntity.ok().body(response)
+    }
+
+    @Operation(summary = "Apple OAuth 로그인")
+    @PostMapping("/login/apple")
+    fun loginApple(
+            @RequestBody request: AppleLoginRequest,
+    ): ResponseEntity<AppleLoginResponse> {
+        val response = authService.loginApple(request)
         return ResponseEntity.ok().body(response)
     }
 

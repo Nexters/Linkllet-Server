@@ -13,20 +13,20 @@ import org.springframework.stereotype.Component
 
 @Component
 class JwtProvider(
-        private val jwtConfigProperties: JwtConfigProperties,
+    private val jwtConfigProperties: JwtConfigProperties,
 ) {
-
-    private val signingKey: SecretKey = Keys.hmacShaKeyFor(jwtConfigProperties.secretKey.toByteArray(StandardCharsets.UTF_8))
+    private val signingKey: SecretKey =
+        Keys.hmacShaKeyFor(jwtConfigProperties.secretKey.toByteArray(StandardCharsets.UTF_8))
 
     fun generateToken(payload: String): String {
         val claims: Claims = Jwts.claims().setSubject(payload)
         val now = Date()
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
-                .signWith(signingKey)
-                .compact()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
+            .signWith(signingKey)
+            .compact()
     }
 
     fun getPayload(token: String): String {
@@ -40,9 +40,9 @@ class JwtProvider(
     }
 
     private fun extractPayload(token: String) = Jwts.parserBuilder()
-            .setSigningKey(signingKey.encoded)
-            .build()
-            .parseClaimsJws(token)
-            .body
-            .subject
+        .setSigningKey(signingKey.encoded)
+        .build()
+        .parseClaimsJws(token)
+        .body
+        .subject
 }

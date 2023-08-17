@@ -17,6 +17,12 @@ security.jwt.token:
   secret-key: ${TOKEN_SECRET_KEY}
   expire-length: ${TOKEN_EXPIRE_LENGTH}
 
+oauth:
+  apple:
+    iss: https://appleid.apple.com
+    client-id: ${OAUTH_APPLE_CLIENT_ID}
+    nonce: ${OAUTH_APPLE_NONCE}
+
 springdoc:
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
