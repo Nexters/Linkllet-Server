@@ -34,3 +34,5 @@
 | <img src="https://avatars.githubusercontent.com/u/60593969?v=4" alt="shine" width="100" height="100"> | <img src="https://avatars.githubusercontent.com/u/57135043?v=4" alt="ngwoon" width="100" height="100"> |
 |                              [zbqmgldjfh](https://github.com/zbqmgldjfh)                              |                              [TaeHyeon Kim](https://github.com/kth990303)                              |
 <br>
+
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FNexters%2FLinkllet-Server&count_bg=%2333C4FD&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
