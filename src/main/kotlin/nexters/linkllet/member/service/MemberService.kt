@@ -10,7 +10,7 @@ import nexters.linkllet.member.domain.findByEmailOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val DEFAULT_FOLDER_NAME = "Default"
+const val DEFAULT_FOLDER_NAME = "Default"
 
 @Transactional
 @Service
