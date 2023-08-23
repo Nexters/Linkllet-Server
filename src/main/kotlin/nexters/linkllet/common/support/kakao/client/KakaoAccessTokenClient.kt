@@ -8,9 +8,13 @@ import org.springframework.cloud.openfeign.SpringQueryMap
 import org.springframework.web.bind.annotation.PostMapping
 
 
-@FeignClient(name = "kakao-access-token-client", url = "https://kauth.kakao.com/oauth/token", configuration = [KakaoFeignConfiguration::class])
+@FeignClient(
+    name = "kakao-access-token-client",
+    url = "\${oauth.kakao.token-host}",
+    configuration = [KakaoFeignConfiguration::class]
+)
 interface KakaoAccessTokenClient {
 
-    @PostMapping
+    @PostMapping("/oauth/token")
     fun getToken(@SpringQueryMap request: KakaoAccessTokenRequest): KakaoAccessToken
 }

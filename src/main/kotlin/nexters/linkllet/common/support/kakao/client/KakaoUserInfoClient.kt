@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader
 
 
-@FeignClient(name = "kakao-user-client", url = "https://kapi.kakao.com/v2/user/me", configuration = [KakaoFeignConfiguration::class])
+@FeignClient(
+    name = "kakao-user-client",
+    url = "\${oauth.kakao.email-host}",
+    configuration = [KakaoFeignConfiguration::class]
+)
 interface KakaoUserInfoClient {
 
-    @GetMapping
+    @GetMapping("/v2/user/me")
     fun getUser(
         @SpringQueryMap request: KakaoUserRequest,
         @RequestHeader(name = "Authorization") authorization: String
