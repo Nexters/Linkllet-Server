@@ -51,6 +51,9 @@ dependencies {
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
+    // WireMock
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.1.5")
+
     // DB
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 
