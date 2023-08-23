@@ -25,6 +25,8 @@ oauth:
   kakao:
     client-id: ${OAUTH_KAKAO_CLIENT_ID}
     redirect-uri: ${OAUTH_KAKAO_REDIRECT_URI}
+    token-host: https://kauth.kakao.com
+    email-host: https://kapi.kakao.com
 
 springdoc:
   default-consumes-media-type: application/json

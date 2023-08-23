@@ -18,3 +18,8 @@ spring:
 security.jwt.token:
   secret-key: testtesttesttesttesttesttesttesttest
   expire-length: 18000000
+
+oauth:
+  kakao:
+    token-host: https://kauth.kakao.com
+    email-host: https://kapi.kakao.com
