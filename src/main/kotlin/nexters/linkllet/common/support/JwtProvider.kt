@@ -24,7 +24,7 @@ class JwtProvider(
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
-            .setExpiration(Date(now.time + jwtConfigProperties.expireLength))
+            .setExpiration(Date(now.time + jwtConfigProperties.expireLength.toLong()))
             .signWith(signingKey)
             .compact()
     }

@@ -7,5 +7,5 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties(prefix = "security.jwt.token")
 data class JwtConfigProperties(
         val secretKey: String,
-        val expireLength: Long = 18000000L,
+        val expireLength: String,
 )
