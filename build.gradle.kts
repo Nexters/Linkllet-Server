@@ -36,6 +36,9 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // config processor
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     // Swagger
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
 
@@ -47,6 +50,9 @@ dependencies {
     // Feign
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // WireMock
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.1.5")
 
     // DB
     implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
