@@ -27,7 +27,7 @@ class AppleJwtParser {
             * Java 에서는 "." 안없애도 에러가 안뜨지만 kotlin 은 에러 발생. 왜 발생하는 것인지 추후 확인 필요
             */
             val decodedHeader =
-                    String(Base64Utils.decodeFromUrlSafeString(encodedHeader.replace(".", "")))
+                String(Base64Utils.decodeFromUrlSafeString(encodedHeader.replace(".", "")))
             return OBJECT_MAPPER.readValue(decodedHeader)
         } catch (e: JsonProcessingException) {
             throw UnauthorizedException("Apple OAuth Identity Token 형식이 올바르지 않습니다.")
@@ -38,10 +38,11 @@ class AppleJwtParser {
 
     fun parsePublicKeyAndGetClaims(idToken: String, publicKey: PublicKey): Claims {
         return try {
-            Jwts.parser()
-                    .setSigningKey(publicKey)
-                    .parseClaimsJws(idToken)
-                    .body
+            Jwts.parserBuilder()
+                .setSigningKey(publicKey)
+                .build()
+                .parseClaimsJws(idToken)
+                .body
         } catch (e: ExpiredJwtException) {
             throw UnauthorizedException("Apple OAuth 로그인 중 Identity Token 유효기간이 만료됐습니다.")
         } catch (e: UnsupportedJwtException) {

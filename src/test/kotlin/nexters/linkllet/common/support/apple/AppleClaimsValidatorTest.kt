@@ -15,37 +15,30 @@ class AppleClaimsValidatorTest {
         val appleOAuthConfigProperties = AppleOAuthConfigProperties()
         val appleClaimsValidator = AppleClaimsValidator(appleOAuthConfigProperties)
         val claimsMap: MutableMap<String, Any> = HashMap()
-        claimsMap[NONCE_KEY] = AppleClaimsValidator.encrypt(appleOAuthConfigProperties.nonce)
 
         val claims = Jwts.claims(claimsMap)
-                .setIssuer(appleOAuthConfigProperties.iss)
-                .setAudience(appleOAuthConfigProperties.clientId)
+            .setIssuer(appleOAuthConfigProperties.iss)
+            .setAudience(appleOAuthConfigProperties.clientId)
 
         // when
         // then
         assertThat(appleClaimsValidator.isValid(claims)).isTrue
     }
 
-    companion object {
-        private const val NONCE_KEY = "nonce"
-    }
-
     @ParameterizedTest
     @CsvSource(
-        "invalid, iss, aud",
-        "nonce, invalid, aud",
-        "nonce, iss, invalid"
+        "invalid, aud",
+        "iss, invalid"
     )
-    fun `잘못된 claims 테스트`(nonce: String, iss: String, aud: String) {
+    fun `잘못된 claims 테스트`(iss: String, aud: String) {
         // given
         val appleOAuthConfigProperties = AppleOAuthConfigProperties()
         val appleClaimsValidator = AppleClaimsValidator(appleOAuthConfigProperties)
         val claimsMap: MutableMap<String, Any> = HashMap()
-        claimsMap[NONCE_KEY] = AppleClaimsValidator.encrypt(nonce)
 
         val claims = Jwts.claims(claimsMap)
-                .setIssuer(iss)
-                .setAudience(aud)
+            .setIssuer(iss)
+            .setAudience(aud)
 
         // when
         // then
