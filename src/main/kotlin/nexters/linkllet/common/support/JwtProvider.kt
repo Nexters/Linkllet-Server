@@ -4,12 +4,12 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import java.nio.charset.StandardCharsets
-import java.util.*
-import javax.crypto.SecretKey
 import nexters.linkllet.common.exception.dto.UnauthorizedException
 import nexters.linkllet.config.JwtConfigProperties
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
+import java.util.Date
+import javax.crypto.SecretKey
 
 @Component
 class JwtProvider(
@@ -24,7 +24,7 @@ class JwtProvider(
         return Jwts.builder()
             .setClaims(claims)
             .setIssuedAt(now)
-            .setExpiration(Date(now.time + jwtConfigProperties.expirationTime))
+            .setExpiration(Date(now.time + jwtConfigProperties.expireLength))
             .signWith(signingKey)
             .compact()
     }
