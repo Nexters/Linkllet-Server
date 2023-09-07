@@ -3,13 +3,13 @@ package nexters.linkllet.member.presentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import nexters.linkllet.common.support.LoginUserEmail
+import nexters.linkllet.common.support.LoginUser
 import nexters.linkllet.member.dto.AppleLoginRequest
-import nexters.linkllet.member.dto.OAuthLoginResponse
 import nexters.linkllet.member.dto.LoginRequest
 import nexters.linkllet.member.dto.LoginResponse
 import nexters.linkllet.member.dto.MemberFeedbackRequest
 import nexters.linkllet.member.dto.MemberSignUpRequest
+import nexters.linkllet.member.dto.OAuthLoginResponse
 import nexters.linkllet.member.service.AuthService
 import nexters.linkllet.member.service.MemberService
 import org.springframework.http.ResponseEntity
@@ -71,10 +71,10 @@ class MemberCommandApi(
     @SecurityRequirement(name = "Device-Id")
     @PostMapping("/feedbacks")
     fun addFeedback(
-            @RequestBody request: MemberFeedbackRequest,
-            @LoginUserEmail email: String,
+        @RequestBody request: MemberFeedbackRequest,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        memberService.addFeedback(email, request.feedback)
+        memberService.addFeedback(userCode, request.feedback)
         return ResponseEntity.ok().build()
     }
 }

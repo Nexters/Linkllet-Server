@@ -3,7 +3,7 @@ package nexters.linkllet.folder.presentation
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
-import nexters.linkllet.common.support.LoginUserEmail
+import nexters.linkllet.common.support.LoginUser
 import nexters.linkllet.folder.dto.ArticleCreateRequest
 import nexters.linkllet.folder.dto.FolderCreateRequest
 import nexters.linkllet.folder.dto.FolderUpdateRequest
@@ -22,10 +22,10 @@ class FolderCommandApi(
     @SecurityRequirement(name = "JWT")
     @PostMapping
     fun createFolder(
-            @RequestBody request: FolderCreateRequest,
-            @LoginUserEmail email: String,
+        @RequestBody request: FolderCreateRequest,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        folderService.createFolder(request.name, email)
+        folderService.createFolder(request.name, userCode)
         return ResponseEntity.ok().build()
     }
 
@@ -33,11 +33,11 @@ class FolderCommandApi(
     @SecurityRequirement(name = "Device-Id")
     @PutMapping("/{id}")
     fun updateFolder(
-            @PathVariable id: Long,
-            @RequestBody request: FolderUpdateRequest,
-            @LoginUserEmail email: String,
+        @PathVariable id: Long,
+        @RequestBody request: FolderUpdateRequest,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        folderService.updateFolderName(id, request.updateName, email)
+        folderService.updateFolderName(id, request.updateName, userCode)
         return ResponseEntity.noContent().build()
     }
 
@@ -45,10 +45,10 @@ class FolderCommandApi(
     @SecurityRequirement(name = "JWT")
     @DeleteMapping("/{id}")
     fun deleteFolder(
-            @PathVariable id: Long,
-            @LoginUserEmail email: String,
+        @PathVariable id: Long,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        folderService.deleteFolder(id, email)
+        folderService.deleteFolder(id, userCode)
         return ResponseEntity.noContent().build()
     }
 
@@ -56,11 +56,11 @@ class FolderCommandApi(
     @SecurityRequirement(name = "JWT")
     @PostMapping("/{id}/articles")
     fun createArticle(
-            @PathVariable id: Long,
-            @RequestBody request: ArticleCreateRequest,
-            @LoginUserEmail email: String,
+        @PathVariable id: Long,
+        @RequestBody request: ArticleCreateRequest,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        folderService.addArticleAtFolder(id, request.name, request.url, email)
+        folderService.addArticleAtFolder(id, request.name, request.url, userCode)
         return ResponseEntity.ok().build()
     }
 
@@ -68,11 +68,11 @@ class FolderCommandApi(
     @SecurityRequirement(name = "JWT")
     @DeleteMapping("/{id}/articles/{articleId}")
     fun createArticle(
-            @PathVariable id: Long,
-            @PathVariable articleId: Long,
-            @LoginUserEmail email: String,
+        @PathVariable id: Long,
+        @PathVariable articleId: Long,
+        @LoginUser userCode: String,
     ): ResponseEntity<Unit> {
-        folderService.deleteArticleAtFolder(id, articleId, email)
+        folderService.deleteArticleAtFolder(id, articleId, userCode)
         return ResponseEntity.noContent().build()
     }
 }

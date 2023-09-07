@@ -10,6 +10,34 @@ import org.springframework.mock.web.MockHttpServletRequest
 class AuthorizationExtractorTest {
 
     @Test
+    @DisplayName("device-id를 추출한다")
+    fun extractValidDeviceId() {
+        // given
+        val request = MockHttpServletRequest()
+        val expected = "device_id"
+        request.addHeader("Device-Id", expected)
+
+        // when
+        val actual = DeviceHeaderExtractor.extractDeviceId(request)
+
+        // then
+        assertThat(actual).isEqualTo("device_id")
+    }
+
+    @Test
+    @DisplayName("device-id가 존재하지 않으면 빈 문자열을 반환한다")
+    fun extractNotExistDeviceId() {
+        // given
+        val request = MockHttpServletRequest()
+
+        // when
+        val actual = DeviceHeaderExtractor.extractDeviceId(request)
+
+        // then
+        assertThat(actual).isEmpty()
+    }
+
+    @Test
     @DisplayName("이메일을 추출한다")
     fun extractValidEmail() {
         // given
@@ -25,7 +53,7 @@ class AuthorizationExtractorTest {
     }
 
     @Test
-    @DisplayName("토큰 형식이 Bearer로 시작하지 않으면 예외를 반환한다")
+    @DisplayName("토큰 형식이 Bearer로 시작하지 않으면 빈 문자열을 반환한다")
     fun extractValidBearerToken() {
         // given
         val request = MockHttpServletRequest()
@@ -33,8 +61,10 @@ class AuthorizationExtractorTest {
         request.addHeader("Authorization", expected)
 
         // when
+        val actual = AuthorizationExtractor.extractToken(request)
+
         // then
-        assertThrows<UnauthorizedException> { AuthorizationExtractor.extractToken(request) }
+        assertThat(actual).isEmpty()
     }
 
     @Test
@@ -51,13 +81,15 @@ class AuthorizationExtractorTest {
     }
 
     @Test
-    @DisplayName("토큰이 존재하지 않으면 예외를 반환한다")
+    @DisplayName("토큰이 존재하지 않으면 빈 문자열을 반환한다")
     fun extractNotExistToken() {
         // given
         val request = MockHttpServletRequest()
 
         // when
+        val actual = AuthorizationExtractor.extractToken(request)
+
         // then
-        assertThrows<UnauthorizedException> { AuthorizationExtractor.extractToken(request) }
+        assertThat(actual).isEmpty()
     }
 }
