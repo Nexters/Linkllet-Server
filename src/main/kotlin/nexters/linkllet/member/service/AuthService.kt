@@ -24,7 +24,7 @@ class AuthService(
 ) {
 
     fun login(request: LoginRequest): LoginResponse {
-        val token = jwtTokenProvider.generateToken(request.email)
+        val token = jwtTokenProvider.generateToken(request.deviceId)
         return LoginResponse(token)
     }
 
@@ -42,8 +42,8 @@ class AuthService(
         return OAuthLoginResponse(token)
     }
 
-    private fun initMember(email: String) {
-        val newMember = memberRepository.save(Member(email = email))
+    private fun initMember(deviceId: String) {
+        val newMember = memberRepository.save(Member(deviceId))
         createStartFolder(newMember)
     }
 

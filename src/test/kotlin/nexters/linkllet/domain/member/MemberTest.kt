@@ -11,7 +11,7 @@ class MemberTest {
     @Test
     fun add_feedback() {
         // given
-        val member = Member(email = "shine@naver.com")
+        val member = Member("shine@naver.com")
 
         // when
         member.addFeedback("피드백1")

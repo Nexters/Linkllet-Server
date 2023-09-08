@@ -14,13 +14,10 @@ import javax.persistence.Table
 class Member(
 
     /*
-     * OAuth 최종 완료 후, deviceId 요청이 없다고 판단되면 삭제할 것
+     * deviceId는 사용자 인식 필드로, email이나 기기 고유값 모두 가능하다
      */
-    @Column(name = "device_id")
+    @Column(name = "device_id", nullable = false)
     private val deviceId: String? = null,
-
-    @Column(name = "email", length = 100, nullable = false)
-    private val email: String,
 
     @Id
     @Column(name = "member_id")

@@ -1,7 +1,6 @@
 package nexters.linkllet.common.support.apple
 
 import io.jsonwebtoken.Claims
-import nexters.linkllet.config.AppleOAuthConfigProperties
 import org.springframework.stereotype.Component
 
 @Component
