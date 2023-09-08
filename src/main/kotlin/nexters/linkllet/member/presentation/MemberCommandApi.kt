@@ -33,7 +33,7 @@ class MemberCommandApi(
     fun signUp(
             @RequestBody request: MemberSignUpRequest,
     ): ResponseEntity<Unit> {
-        memberService.signUp(request.email)
+        memberService.signUp(request.deviceId)
         return ResponseEntity.ok().build()
     }
 
@@ -68,13 +68,14 @@ class MemberCommandApi(
     }
 
     @Operation(summary = "피드백 생성")
+    @SecurityRequirement(name = "JWT")
     @SecurityRequirement(name = "Device-Id")
     @PostMapping("/feedbacks")
     fun addFeedback(
         @RequestBody request: MemberFeedbackRequest,
-        @LoginUser userCode: String,
+        @LoginUser deviceId: String,
     ): ResponseEntity<Unit> {
-        memberService.addFeedback(userCode, request.feedback)
+        memberService.addFeedback(deviceId, request.feedback)
         return ResponseEntity.ok().build()
     }
 }

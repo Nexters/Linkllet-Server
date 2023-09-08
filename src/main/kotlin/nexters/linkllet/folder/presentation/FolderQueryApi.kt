@@ -19,6 +19,7 @@ class FolderQueryApi(
 
     @Operation(summary = "폴더 목록 조회")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @GetMapping
     fun lookUpFolderList(
         @LoginUser userCode: String,
@@ -29,6 +30,7 @@ class FolderQueryApi(
 
     @Operation(summary = "기사 목록 조회")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @GetMapping("/{id}/articles")
     fun lookUpArticleList(
         @PathVariable id: Long,
@@ -39,6 +41,7 @@ class FolderQueryApi(
     }
 
     @Operation(summary = "링크 검색")
+    @SecurityRequirement(name = "JWT")
     @SecurityRequirement(name = "Device-Id")
     @GetMapping("/search")
     fun searchArticles(

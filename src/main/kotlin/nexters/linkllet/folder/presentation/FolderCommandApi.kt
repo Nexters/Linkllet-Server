@@ -20,6 +20,7 @@ class FolderCommandApi(
 
     @Operation(summary = "폴더 생성")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @PostMapping
     fun createFolder(
         @RequestBody request: FolderCreateRequest,
@@ -30,6 +31,7 @@ class FolderCommandApi(
     }
 
     @Operation(summary = "폴더명 변경")
+    @SecurityRequirement(name = "JWT")
     @SecurityRequirement(name = "Device-Id")
     @PutMapping("/{id}")
     fun updateFolder(
@@ -43,6 +45,7 @@ class FolderCommandApi(
 
     @Operation(summary = "폴더 삭제")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @DeleteMapping("/{id}")
     fun deleteFolder(
         @PathVariable id: Long,
@@ -54,6 +57,7 @@ class FolderCommandApi(
 
     @Operation(summary = "링크 생성")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @PostMapping("/{id}/articles")
     fun createArticle(
         @PathVariable id: Long,
@@ -66,6 +70,7 @@ class FolderCommandApi(
 
     @Operation(summary = "링크 삭제")
     @SecurityRequirement(name = "JWT")
+    @SecurityRequirement(name = "Device-Id")
     @DeleteMapping("/{id}/articles/{articleId}")
     fun createArticle(
         @PathVariable id: Long,
