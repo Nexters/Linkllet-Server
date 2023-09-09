@@ -30,11 +30,15 @@ class LoginUserResolver(
         val jwtToken = AuthorizationExtractor.extractToken(request)
 
         if (hasBothDeviceIdAndToken(deviceId, jwtToken)) throw UnauthorizedException()
-        else if (deviceId.isNullOrBlank()) return jwtProvider.getPayload(jwtToken)
-        else if (jwtToken.isNullOrBlank()) return deviceId
+        else if (isAppleOAuthLogin(deviceId)) return jwtProvider.getPayload(jwtToken)
+        else if (isKakaoOAuthLogin(jwtToken)) return deviceId
         else throw UnauthorizedException()
     }
 
     private fun hasBothDeviceIdAndToken(deviceId: String, jwtToken: String) =
         !deviceId.isNullOrBlank() && !jwtToken.isNullOrBlank()
+
+    private fun isAppleOAuthLogin(deviceId: String) = deviceId.isNullOrBlank()
+
+    private fun isKakaoOAuthLogin(jwtToken: String) = jwtToken.isNullOrBlank()
 }

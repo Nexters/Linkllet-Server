@@ -10,7 +10,7 @@ class DeviceHeaderExtractor {
 
         fun extractDeviceId(request: HttpServletRequest): String {
             return request.getHeader(DEVICE_ID_HEADER)
-                ?: return EMPTY_TOKEN
+                ?: EMPTY_TOKEN
         }
     }
 }
