@@ -43,7 +43,7 @@ class JwtProviderTest {
     @DisplayName("만료된 토큰에서 payload 추출 시 예외를 반환한다")
     fun getPayloadByExpiredToken() {
         // given
-        val jwtConfigProperties = JwtConfigProperties(VALID_SECRET_KEY, -1)
+        val jwtConfigProperties = JwtConfigProperties(VALID_SECRET_KEY, "-1")
         val expiredTokenProvider = JwtProvider(jwtConfigProperties)
 
         // when
@@ -54,6 +54,6 @@ class JwtProviderTest {
     companion object {
         private const val VALID_SECRET_KEY = "testtesttesttesttesttesttesttest"
         private const val INVALID_SECRET_KEY = "wrongtesttesttesttesttesttesttest"
-        private const val EXPIRATION_TIME: Long = 3600000
+        private const val EXPIRATION_TIME: String = "3600000"
     }
 }

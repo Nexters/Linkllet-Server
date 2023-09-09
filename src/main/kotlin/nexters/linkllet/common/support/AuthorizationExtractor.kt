@@ -1,7 +1,7 @@
 package nexters.linkllet.common.support
 
-import javax.servlet.http.HttpServletRequest
 import nexters.linkllet.common.exception.dto.UnauthorizedException
+import javax.servlet.http.HttpServletRequest
 
 class AuthorizationExtractor {
 
@@ -9,6 +9,7 @@ class AuthorizationExtractor {
 
         private const val AUTHENTICATION_TYPE = "Bearer"
         private const val AUTHORIZATION_HEADER_KEY = "Authorization"
+        private const val EMPTY_TOKEN = ""
         private const val START_TOKEN_INDEX = 6
 
         fun extractToken(request: HttpServletRequest): String {
@@ -22,7 +23,8 @@ class AuthorizationExtractor {
                     return extractToken
                 }
             }
-            throw UnauthorizedException()
+
+            return EMPTY_TOKEN
         }
 
         private fun validateStartsAuthorizationKey(value: String) =
