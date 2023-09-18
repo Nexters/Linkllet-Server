@@ -1,0 +1,8 @@
+{
+  "access_token": "test_access_token",
+  "token_type": "bearer",
+  "refresh_token": "test_refresh_token",
+  "expires_in": 7199,
+  "refresh_token_expires_in": 86399,
+  "scope": "profile_image openid profile_nickname"
+}

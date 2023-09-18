@@ -13,8 +13,11 @@ import javax.persistence.Table
 @Table(name = "member")
 class Member(
 
+    /*
+     * deviceId는 사용자 인식 필드로, email이나 기기 고유값 모두 가능하다
+     */
     @Column(name = "device_id", nullable = false)
-    private val deviceId: String,
+    private val deviceId: String? = null,
 
     @Id
     @Column(name = "member_id")

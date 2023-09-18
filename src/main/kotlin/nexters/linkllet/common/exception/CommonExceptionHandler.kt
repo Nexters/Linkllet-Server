@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 class CommonExceptionHandler {
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(this.javaClass)!!
+        private val log: Logger = LoggerFactory.getLogger(this::class.java)!!
     }
 
     @ExceptionHandler

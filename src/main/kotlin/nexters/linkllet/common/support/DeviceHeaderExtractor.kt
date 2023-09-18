@@ -1,16 +1,16 @@
 package nexters.linkllet.common.support
 
-import nexters.linkllet.common.exception.dto.UnauthorizedException
-import org.springframework.web.context.request.NativeWebRequest
-
-private const val DEVICE_ID_HEADER = "Device-Id"
+import javax.servlet.http.HttpServletRequest
 
 class DeviceHeaderExtractor {
 
     companion object {
-        fun extractDeviceId(request: NativeWebRequest): String {
+        private const val DEVICE_ID_HEADER = "Device-Id"
+        private const val EMPTY_TOKEN = ""
+
+        fun extractDeviceId(request: HttpServletRequest): String {
             return request.getHeader(DEVICE_ID_HEADER)
-                    ?: throw UnauthorizedException("디바이스 ID가 존재하지 않습니다.")
+                ?: EMPTY_TOKEN
         }
     }
 }

@@ -36,8 +36,26 @@ dependencies {
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // config processor
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
     // Swagger
     implementation ("org.springdoc:springdoc-openapi-ui:1.6.14")
+
+    // JWT
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
+
+    // Feign
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.5"))
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
+    // WireMock
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-stub-runner:3.1.5")
+
+    // DB
+    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0")
 
     // Test Container
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")

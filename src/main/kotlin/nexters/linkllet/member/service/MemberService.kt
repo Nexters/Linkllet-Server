@@ -10,13 +10,13 @@ import nexters.linkllet.member.domain.findByDeviceIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val DEFAULT_FOLDER_NAME = "Default"
+const val DEFAULT_FOLDER_NAME = "Default"
 
 @Transactional
 @Service
 class MemberService(
-    private val memberRepository: MemberRepository,
-    private val folderRepository: FolderRepository,
+        private val memberRepository: MemberRepository,
+        private val folderRepository: FolderRepository,
 ) {
 
     fun signUp(deviceId: String) {
@@ -26,7 +26,7 @@ class MemberService(
         initMember(deviceId)
     }
 
-    fun addFeedback(feedback: String, deviceId: String) {
+    fun addFeedback(deviceId: String, feedback: String) {
         val findMember = memberRepository.findByDeviceIdOrThrow(deviceId)
         findMember.addFeedback(feedback)
     }
